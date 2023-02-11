@@ -12,6 +12,38 @@ wget = home + '/AppData/Local/Microsoft/WindowsApps/winget.exe'
 scoop = home  + '/scoop/apps/scoop/current/'
 pml = [wget, 'C:\\ProgramData\\chocolatey\\bin\\choco.exe', scoop]
 
+# Check if the package managers are installed
+
+if os.path.exists(pml[2]):
+    print('Scoop detected')
+else:
+    print('Scoop not detected')
+    installscoopask = input('Do you want to install it? [Y/n]: ')
+    if installscoopask == '' or 'y' or 'Y':
+        print('we will install it')
+    elif installscoopask == 'n' or 'N':
+        print('we will not install it')
+    else:
+        print('unsupported')
+
+if os.path.exists(pml[1]):
+    print('Chocolatey detected')
+else:
+    print('Chocolatey not detected')
+    installchocoask = input('Do you want to install it? [Y/n]: ')
+    if installchocoask == '' or 'y' or 'Y':
+        print('we will install it')
+    elif installchocopask == 'n' or 'N':
+        print('we will not install it')
+    else:
+        print('unsupported')
+
+if os.path.exists(pml[0]):
+    print('Winget detected')
+else:
+    print('Winget not detected')
+    print('Update your Windows and update your apps from microsoft store')
+
 # Basic functions
 
 def jomainstall():
@@ -43,6 +75,8 @@ if len(sys.argv) < 3:
     
 action = sys.argv[1].lower()
 package_list = sys.argv[2:]
+
+# Identify action and add a temporary code for the actions
 
 for package_name in package_list:
     if action == "install":
