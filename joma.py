@@ -72,57 +72,163 @@ def jomainstall():
     command1 = ['scoop', 'install', package_list, '-y']
     command2 = ['choco', 'install', package_list, '--yes']
     command3 = ['winget', 'install', '-e', package_list, '-y']
+    if enablecmd1 == True:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd2 == True:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd3 == True:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+
     
 def jomaremove():
     command1 = ['scoop', 'uninstall', package_list, '-y']
     command2 = ['choco', 'uninstall', package_list, '--yes']
     command3 = ['winget', 'uninstall', package_list, '-y']
+    if enablecmd1 == True:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd2 == True:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd3 == True:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
         
 def jomaupdate():
     command1 = ['scoop', 'update', package_list, '-y']
     command2 = ['choco', 'upgrade', package_list, '--yes']
     command3 = ['winget', 'update', package_list, '-y']
+    if enablecmd1 == True:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd2 == True:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd3 == True:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
     
 def jomasearch():
     command1 = ['scoop', 'search', package_list]
     command2 = ['choco', 'search', package_list]
     command3 = ['winget', 'search', package_list]
+    if enablecmd1 == True:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd2 == True:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd3 == True:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
     
 def jomaexport():
     command1 = ['scoop', 'list', '>', listnames[0]]
     command2 = ['choco', 'list', '--local-only', '>', listnames[1]]
     command3 = ['winget', 'show', 'installed' '>', listnames[2]]
+    if enablecmd1 == True:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd2 == True:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd3 == True:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
     
 def jomaimport():
     print('code for this function')
+    if enablecmd1 == True:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd2 == True:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd3 == True:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
 
 def jomaupgrade():
     command1 = ['scoop', 'update', '-y']
     command2 = ['choco', 'upgrade', '--yes']
     command3 = ['winget', 'update', '-y']
+    if enablecmd1 == True:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd2 == True:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
+    if enablecmd3 == True:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
+        print(cmd)
+    else:
+        time.sleep(0)
     
+def jomaerror():
+    print('Action not supported')
 
 # Identify action and add a temporary code for the actions
 
 for package_name in package_list:
     if action == "install":
-        command = ["winget", "install", '-e', package_name]
+        jomainstall()
     elif action == "remove":
-        command = ["winget", "uninstall", package_name]
+        jomaremove()
     elif action == "uninstall":
-        command = ["winget", "uninstall", package_name]
+        jomaremove()
     elif action == "update":
-        command = ["winget", "update", package_name]
+        jomaupdate()
     elif action == "upgrade":
-        command = ["winget", "update", '--all']
+        jomaupgrade()
     elif action == "search":
-        command = ["winget", "search", package_name]
+        jomasearch()
     elif action == "export":
-        command = ["winget", "export", "-o", "wget_pkgs.json"]
+        jomaexport()
     elif action == "import":
-        command = ["winget", "import", "-i", "wget_pkgs.json"]
+        jomaimport()
     else:
-        print(f"Error: Unknown action '{action}'")
+        jomaerror()
         sys.exit(1)
-
-    result = subprocess.run(command, stdout=subprocess.PIPE)
