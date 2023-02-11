@@ -52,7 +52,9 @@ def jomainstall():
     command3 = ['winget', 'install', '-e', package_list, '-y']
     
 def jomaremove():
-    print('code for this function')
+    command1 = ['scoop', 'uninstall', package_list, '-y']
+    command2 = ['choco', 'uninstall', package_list, '--yes']
+    command3 = ['winget', 'uninstall', package_list, '-y']
         
 def jomaupdate():
     print('code for this function')
