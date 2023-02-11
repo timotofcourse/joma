@@ -150,9 +150,9 @@ def jomasearch():
         time.sleep(0)
     
 def jomaexport():
-    command1 = ['scoop', 'list', '>', listnames[0]]
-    command2 = ['choco', 'list', '--local-only', '>', listnames[1]]
-    command3 = ['winget', 'show', 'installed' '>', listnames[2]]
+    command1 = ['scoop', 'export', '>', listnames[0]]
+    command2 = ['choco', 'export', listnames[1]]
+    command3 = ['winget', 'export', '-o', listnames[2]]
     if enablecmd1 == True:
         cmd = subprocess.run(command1, stdout=subprocess.PIPE)
         print(cmd)
@@ -170,7 +170,9 @@ def jomaexport():
         time.sleep(0)
     
 def jomaimport():
-    print('code for this function')
+    command1 = ['scoop', 'install', listnames[0]]
+    command2 = ['choco', 'install', listnames[1]]
+    command3 = ['winget', 'import', '-i', listnames[2]]
     if enablecmd1 == True:
         cmd = subprocess.run(command1, stdout=subprocess.PIPE)
         print(cmd)
