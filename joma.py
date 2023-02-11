@@ -41,3 +41,28 @@ if len(sys.argv) < 3:
     print("Usage: joma action package")
     sys.exit(1)
     
+action = sys.argv[1].lower()
+package_list = sys.argv[2:]
+
+for package_name in package_list:
+    if action == "install":
+        command = ["winget", "install", package_name]
+    elif action == "remove":
+        command = ["winget", "uninstall", package_name]
+    elif action == "uninstall":
+        command = ["winget", "uninstall", package_name]
+    elif action == "update":
+        command = ["winget", "update", package_name]
+    elif action == "upgrade":
+        command = ["winget", "update", '--all']
+    elif action == "search":
+        command = ["winget", "search", package_name]
+    elif action == "export":
+        command = ["winget", "export", "-o", "wget_pkgs.json"]
+    elif action == "import":
+        command = ["winget", "import", "-i", "wget_pkgs.json"]
+    else:
+        print(f"Error: Unknown action '{action}'")
+        sys.exit(1)
+
+    result = subprocess.run(command, stdout=subprocess.PIPE)
