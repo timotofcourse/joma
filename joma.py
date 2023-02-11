@@ -35,3 +35,9 @@ def jomaimport():
 def jomaupgrade():
     print('code for this function')
     
+# Get arguments
+
+if len(sys.argv) < 3:
+    print("Usage: joma action package")
+    sys.exit(1)
+    
