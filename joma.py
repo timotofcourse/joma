@@ -33,7 +33,7 @@ else:
     installchocoask = input('Do you want to install it? [Y/n]: ')
     if installchocoask == '' or 'y' or 'Y':
         print('we will install it')
-    elif installchocopask == 'n' or 'N':
+    elif installchocoask == 'n' or 'N':
         print('we will not install it')
     else:
         print('unsupported')
@@ -47,7 +47,9 @@ else:
 # Basic functions
 
 def jomainstall():
-    print('code for this function')
+    command1 = ['scoop', 'install', package_list, '-y']
+    command2 = ['choco', 'install', package_list, '--yes']
+    command3 = ['winget', 'install', '-e', package_list, '-y']
     
 def jomaremove():
     print('code for this function')
@@ -80,7 +82,7 @@ package_list = sys.argv[2:]
 
 for package_name in package_list:
     if action == "install":
-        command = ["winget", "install", package_name]
+        command = ["winget", "install", '-e', package_name]
     elif action == "remove":
         command = ["winget", "uninstall", package_name]
     elif action == "uninstall":
