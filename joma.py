@@ -47,6 +47,14 @@ else:
     if installscoopask == '' or 'y' or 'Y':
         print('we will install it')
         enablecmd1 = True
+        subprocess.Popen('scoop', 'install', 'git').wait()
+        subprocess.Popen('scoop', 'bucket', 'add', 'main').wait()
+        subprocess.Popen('scoop', 'bucket', 'add', 'games').wait()
+        subprocess.Popen('scoop', 'bucket', 'add', 'extras').wait()
+        subprocess.Popen('scoop', 'bucket', 'add', 'versions').wait()
+        subprocess.Popen('scoop', 'bucket', 'add', 'java').wait()
+        subprocess.Popen('scoop', 'bucket', 'add', 'nonportable').wait()
+        subprocess.Popen('scoop', 'bucket', 'add', 'filmabem', 'https://github.com/FilmaBem2/applications.git').wait()
     elif installscoopask == 'n' or 'N':
         print('we will not install it')
         enablecmd1 = False
@@ -75,7 +83,6 @@ else:
     print('Winget not detected')
     print('Update your Windows and update your apps from microsoft store')
     enablecmd3 = False
-
 
 # Basic functions
 
