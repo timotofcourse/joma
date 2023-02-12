@@ -231,7 +231,7 @@ def jomaerror():
     
 def jomahelp():
     print('Here\'s a list of supported operations: ')
-    print("""Install - Installs a package \n
+    print("""install - Installs a package \n
           remove - Removes a package \n
           uninstall - Removes a package\n
           update - Updates a package\n
