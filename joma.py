@@ -19,7 +19,7 @@ enablecmd3 = False
 
 # Get arguments
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 2:
     print("Usage: joma action package")
     print("Note: When you import/export package lists they will be stored/imported from your home folder")
     print("For help use: \"joma help\"")
@@ -33,28 +33,45 @@ package_list = sys.argv[2:]
 if os.path.exists(pml[2]):
     print('Scoop detected')
     enablecmd1 = True
-    subprocess.Popen('scoop', 'install', 'git').wait()
-    subprocess.Popen('scoop', 'bucket', 'add', 'main').wait()
-    subprocess.Popen('scoop', 'bucket', 'add', 'games').wait()
-    subprocess.Popen('scoop', 'bucket', 'add', 'extras').wait()
-    subprocess.Popen('scoop', 'bucket', 'add', 'versions').wait()
-    subprocess.Popen('scoop', 'bucket', 'add', 'java').wait()
-    subprocess.Popen('scoop', 'bucket', 'add', 'nonportable').wait()
-    subprocess.Popen('scoop', 'bucket', 'add', 'filmabem', 'https://github.com/FilmaBem2/applications.git').wait()
+    installgit = subprocess.Popen('scoop', 'install', 'git')
+    installgit.wait()
+    mainbucket = subprocess.Popen('scoop', 'bucket', 'add', 'main')
+    mainbucket.wait()
+    gamesbucket = subprocess.Popen('scoop', 'bucket', 'add', 'games')
+    gamesbucket.wait()
+    extrasbucket = subprocess.Popen('scoop', 'bucket', 'add', 'extras')
+    extrasbucket.wait()
+    versionsbucket = subprocess.Popen('scoop', 'bucket', 'add', 'versions')
+    versionsbucket.wait()
+    javabucket = subprocess.Popen('scoop', 'bucket', 'add', 'java')
+    javabucket.wait()
+    nonportablebucket = subprocess.Popen('scoop', 'bucket', 'add', 'nonportable')
+    nonportablebucket.wait()
+    filmabembucket = subprocess.Popen('scoop', 'bucket', 'add', 'filmabem', 'https://github.com/FilmaBem2/applications.git')
+    filmabembucket.wait()
 else:
     print('Scoop not detected')
     installscoopask = input('Do you want to install it? [Y/n]: ')
     if installscoopask == '' or 'y' or 'Y':
-        subprocess.Popen('irm', 'get.scoop.sh', '|', 'iex').wait()
+        installscoop = subprocess.Popen('irm', 'get.scoop.sh', '|', 'iex')
+        installscoop.wait()
         enablecmd1 = True
-        subprocess.Popen('scoop', 'install', 'git').wait()
-        subprocess.Popen('scoop', 'bucket', 'add', 'main').wait()
-        subprocess.Popen('scoop', 'bucket', 'add', 'games').wait()
-        subprocess.Popen('scoop', 'bucket', 'add', 'extras').wait()
-        subprocess.Popen('scoop', 'bucket', 'add', 'versions').wait()
-        subprocess.Popen('scoop', 'bucket', 'add', 'java').wait()
-        subprocess.Popen('scoop', 'bucket', 'add', 'nonportable').wait()
-        subprocess.Popen('scoop', 'bucket', 'add', 'filmabem', 'https://github.com/FilmaBem2/applications.git').wait()
+        installgit = subprocess.Popen('scoop', 'install', 'git')
+        installgit.wait()
+        mainbucket = subprocess.Popen('scoop', 'bucket', 'add', 'main')
+        mainbucket.wait()
+        gamesbucket = subprocess.Popen('scoop', 'bucket', 'add', 'games')
+        gamesbucket.wait()
+        extrasbucket = subprocess.Popen('scoop', 'bucket', 'add', 'extras')
+        extrasbucket.wait()
+        versionsbucket = subprocess.Popen('scoop', 'bucket', 'add', 'versions')
+        versionsbucket.wait()
+        javabucket = subprocess.Popen('scoop', 'bucket', 'add', 'java')
+        javabucket.wait()
+        nonportablebucket = subprocess.Popen('scoop', 'bucket', 'add', 'nonportable')
+        nonportablebucket.wait()
+        filmabembucket = subprocess.Popen('scoop', 'bucket', 'add', 'filmabem', 'https://github.com/FilmaBem2/applications.git')
+        filmabembucket.wait()
     elif installscoopask == 'n' or 'N':
         print('we will not install it')
         enablecmd1 = False
