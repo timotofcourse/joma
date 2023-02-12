@@ -238,7 +238,7 @@ def jomahelp():
           uninstall - Removes a package\n
           update - Updates a package\n
           upgrade - Updates all packages\n
-          search - Search for a package
+          search - Search for a package\n
           export - Exports the lists of installed packages through scoop, chocolatey and winget \n
           import - Imports the lists from previous installed packages from scoop, chocolatey and winget\n
           \n \n \n
