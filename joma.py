@@ -33,6 +33,9 @@ package_list = sys.argv[2:]
 if os.path.exists(pml[2]):
     print('Scoop detected')
     enablecmd1 = True
+    
+    # Add all the buckets
+    
     installgit = subprocess.Popen('scoop install git', shell=True)
     installgit.wait()
     mainbucket = subprocess.Popen('scoop bucket add main', shell=True)
@@ -53,9 +56,15 @@ else:
     print('Scoop not detected')
     installscoopask = input('Do you want to install it? [Y/n]: ')
     if installscoopask == '' or 'y' or 'Y':
+        
+        # Install Scoop
+        
         installscoop = subprocess.Popen('irm get.scoop.sh | iex', shell=True)
         installscoop.wait()
         enablecmd1 = True
+        
+        # Add all the buckets
+        
         installgit = subprocess.Popen('scoop install git', shell=True)
         installgit.wait()
         mainbucket = subprocess.Popen('scoop bucket add main', shell=True)
@@ -73,7 +82,6 @@ else:
         filmabembucket = subprocess.Popen('scoop bucket add filmabem https://github.com/FilmaBem2/applications.git', shell=True)
         filmabembucket.wait()
     elif installscoopask == 'n' or 'N':
-        print('we will not install it')
         enablecmd1 = False
     else:
         print('unsupported')
@@ -85,11 +93,13 @@ else:
     print('Chocolatey not detected')
     installchocoask = input('Do you want to install it? [Y/n]: ')
     if installchocoask == '' or 'y' or 'Y':
+        
+        # Install Chocolatey
+        
         installchoco = subprocess.Popen("[System.Net.ServicePointManager]::SecurityProtocol", "=",  "[System.Net.ServicePointManager]::SecurityProtocol", "-bor", "3072;", "iex", "((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))")
         installchoco.wait()
         enablecmd2 = True
     elif installchocoask == 'n' or 'N':
-        print('we will not install it')
         enablecmd2 = False
     else:
         print('unsupported')
