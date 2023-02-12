@@ -241,7 +241,7 @@ def jomahelp():
           search - Search for a package
           export - Exports the lists of installed packages through scoop, chocolatey and winget \n
           import - Imports the lists from previous installed packages from scoop, chocolatey and winget\n
-          /n /n /n
+          \n \n \n
           Note: The Exported lists will have the package manager name in the filename so if you want to import a list make sure the names are the sames as joma exported""")
 
 # Identify action and add a temporary code for the actions
