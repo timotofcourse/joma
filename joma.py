@@ -11,7 +11,10 @@ home = os.path.expanduser("~")
 wget = home + '/AppData/Local/Microsoft/WindowsApps/winget.exe'
 scoop = home  + '/scoop/apps/scoop/current/'
 pml = [wget, 'C:\\ProgramData\\chocolatey\\bin\\choco.exe', scoop]
-listnames = ['scoop-packages.txt', 'choco-packages.txt', 'winget-packages.txt']
+scooplist = home + '/scoop-packages.txt'
+chocolist = home + '/choco-packages.txt'
+wingetlist = home + '/winget-packages.txt'
+listnames = [scooplist, chocolist, wingetlist]
 enablecmd1 = False
 enablecmd2 = False
 enablecmd3 = False
@@ -230,7 +233,8 @@ def jomahelp():
           search - Search for a package
           export - Exports the lists of installed packages through scoop, chocolatey and winget \n
           import - Imports the lists from previous installed packages from scoop, chocolatey and winget\n
-          """)
+          /n /n /n
+          Note: The Exported lists will have the package manager name in the filename so if you want to import a list make sure the names are the sames as joma exported""")
 
 # Identify action and add a temporary code for the actions
 
