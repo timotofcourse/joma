@@ -1,8 +1,6 @@
 import time
-import argparse
 import sys
 import os
-import platform
 import subprocess
 
 # Locations of package managers
