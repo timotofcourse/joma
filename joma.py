@@ -21,6 +21,8 @@ enablecmd3 = False
 
 if len(sys.argv) < 3:
     print("Usage: joma action package")
+    print("Note: When you import/export package lists they will be stored/imported from your home folder")
+    print("For help use: \"joma help\"")
     sys.exit(1)
     
 action = sys.argv[1].lower()
@@ -103,7 +105,6 @@ def jomainstall():
         print(cmd)
     else:
         time.sleep(0)
-
     
 def jomaremove():
     command1 = ['scoop', 'uninstall', package_list, '-y']
