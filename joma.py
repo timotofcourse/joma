@@ -46,6 +46,7 @@ else:
     installscoopask = input('Do you want to install it? [Y/n]: ')
     if installscoopask == '' or 'y' or 'Y':
         print('we will install it')
+        subprocess.Popen('irm', 'get.scoop.sh', '|', 'iex').wait()
         enablecmd1 = True
         subprocess.Popen('scoop', 'install', 'git').wait()
         subprocess.Popen('scoop', 'bucket', 'add', 'main').wait()
@@ -69,6 +70,7 @@ else:
     installchocoask = input('Do you want to install it? [Y/n]: ')
     if installchocoask == '' or 'y' or 'Y':
         print('we will install it')
+        subprocess.Popen("[System.Net.ServicePointManager]::SecurityProtocol", "=",  "[System.Net.ServicePointManager]::SecurityProtocol", "-bor", "3072;", "iex", "((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))").wait()
         enablecmd2 = True
     elif installchocoask == 'n' or 'N':
         print('we will not install it')
