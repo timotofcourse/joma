@@ -120,7 +120,7 @@ def jomaremove():
 def jomaupdate():
     command1 = ['scoop', 'update', package_list, '-y']
     command2 = ['choco', 'upgrade', package_list, '--yes']
-    command3 = ['winget', 'update', package_list, '-y']
+    command3 = ['winget', 'upgrade', package_list, '-y']
     if enablecmd1 == True:
         cmd = subprocess.run(command1, stdout=subprocess.PIPE)
         print(cmd)
@@ -198,9 +198,9 @@ def jomaimport():
         time.sleep(0)
 
 def jomaupgrade():
-    command1 = ['scoop', 'update', '-y']
-    command2 = ['choco', 'upgrade', '--yes']
-    command3 = ['winget', 'update', '-y']
+    command1 = ['scoop', 'update', '*', '-y']
+    command2 = ['choco', 'upgrade', 'all', '--yes']
+    command3 = ['winget', 'upgrade', '--all', '-y']
     if enablecmd1 == True:
         cmd = subprocess.run(command1, stdout=subprocess.PIPE)
         print(cmd)
@@ -219,6 +219,18 @@ def jomaupgrade():
     
 def jomaerror():
     print('Action not supported')
+    
+def jomahelp():
+    print('Here\'s a list of supported operations: ')
+    print("""Install - Installs a package \n
+          remove - Removes a package \n
+          uninstall - Removes a package\n
+          update - Updates a package\n
+          upgrade - Updates all packages\n
+          search - Search for a package
+          export - Exports the lists of installed packages through scoop, chocolatey and winget \n
+          import - Imports the lists from previous installed packages from scoop, chocolatey and winget\n
+          """)
 
 # Identify action and add a temporary code for the actions
 
@@ -239,6 +251,8 @@ for package_name in package_list:
         jomaexport()
     elif action == "import":
         jomaimport()
+    elif action == "help":
+        jomahelp()
     else:
         jomaerror()
         sys.exit(1)
