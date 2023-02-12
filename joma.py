@@ -30,6 +30,14 @@ package_list = sys.argv[2:]
 if os.path.exists(pml[2]):
     print('Scoop detected')
     enablecmd1 = True
+    subprocess.Popen('scoop', 'install', 'git').wait()
+    subprocess.Popen('scoop', 'bucket', 'add', 'main').wait()
+    subprocess.Popen('scoop', 'bucket', 'add', 'games').wait()
+    subprocess.Popen('scoop', 'bucket', 'add', 'extras').wait()
+    subprocess.Popen('scoop', 'bucket', 'add', 'versions').wait()
+    subprocess.Popen('scoop', 'bucket', 'add', 'java').wait()
+    subprocess.Popen('scoop', 'bucket', 'add', 'nonportable').wait()
+    subprocess.Popen('scoop', 'bucket', 'add', 'filmabem', 'https://github.com/FilmaBem2/applications.git').wait()
 else:
     print('Scoop not detected')
     installscoopask = input('Do you want to install it? [Y/n]: ')
