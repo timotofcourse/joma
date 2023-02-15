@@ -26,56 +26,36 @@ wingetfound = checkpackagemanagers('winget')
 
 
 def jomainstall(package_list):
-    scoopcommand = ['scoop', 'install'] + package_list + ['-y']
-    chococommand = ['choco', 'install'] + package_list + ['--yes']
-    wingetcommand = ['winget', 'install', '-e'] + package_list + ['-y']
-    if scoopfound:
-        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
+    package_list = package_list.lower()
+    managers = ['scoop', 'choco', 'winget']
+    for manager in managers:
+        if checkpackagemanagers(manager):
+            command = [manager, 'install', package_list]
+            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, error = cmd.communicate()
+            if error:
+                print(f"An error occurred: {error.decode('utf-8')}")
+            else:
+                print(f"Output from {manager}:")
+                print(output.decode('utf-8'))
         else:
-            print(f"Output: {output.decode('utf-8')}")
-    if chocofound:
-        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
-    if wingetfound:
-        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
+            print(f"{manager} not found.")
     
 def jomaremove(package_list):
-    scoopcommand = ['scoop', 'uninstall', package_list, '-y']
-    chococommand = ['choco', 'uninstall', package_list, '--yes']
-    wingetcommand = ['winget', 'uninstall', package_list, '-y']
-    if scoopfound:
-        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
+    package_list = package_list.lower()
+    managers = ['scoop', 'choco', 'winget']
+    for manager in managers:
+        if checkpackagemanagers(manager):
+            command = [manager, 'uninstall', package_list]
+            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, error = cmd.communicate()
+            if error:
+                print(f"An error occurred: {error.decode('utf-8')}")
+            else:
+                print(f"Output from {manager}:")
+                print(output.decode('utf-8'))
         else:
-            print(f"Output: {output.decode('utf-8')}")
-    if chocofound:
-        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
-    if wingetfound:
-        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
+            print(f"{manager} not found on the system.")
         
 def jomaupdate(package_list):
     scoopcommand = ['scoop', 'update', package_list, '-y']
