@@ -2,25 +2,25 @@ import time
 import sys
 import os
 import subprocess
+import shutil
 
 # Locations of package managers
 
 home = os.path.expanduser("~")
-wget = home + '/AppData/Local/Microsoft/WindowsApps/winget.exe'
-scoop = home  + '/scoop/apps/scoop/current/'
-pml = [wget, 'C:\\ProgramData\\chocolatey\\bin\\choco.exe', scoop]
+packagemanagers = ['winget', 'choco', 'scoop']
 scooplist = home + '/scoop-packages.txt'
 chocolist = home + '/choco-packages.txt'
 wingetlist = home + '/winget-packages.txt'
 listnames = [scooplist, chocolist, wingetlist]
-enablecmd1 = False
-enablecmd2 = False
-enablecmd3 = False
+
+# Check for package managers
+
+
 
 # Basic Functions
 
 
-def jomainstall(package_list, enablecmd1=True, enablecmd2=True, enablecmd3=True):
+def jomainstall(package_list, enablecmd1, enablecmd2, enablecmd3):
     command1 = ['scoop', 'install'] + package_list + ['-y']
     command2 = ['choco', 'install'] + package_list + ['--yes']
     command3 = ['winget', 'install', '-e'] + package_list + ['-y']
@@ -46,12 +46,19 @@ def jomainstall(package_list, enablecmd1=True, enablecmd2=True, enablecmd3=True)
         else:
             print(f"Output: {output.decode('utf-8')}")
     
-def jomaremove():
+def jomaremove(package_list, enablecmd1, enablecmd2, enablecmd3):
     command1 = ['scoop', 'uninstall', package_list, '-y']
     command2 = ['choco', 'uninstall', package_list, '--yes']
     command3 = ['winget', 'uninstall', package_list, '-y']
-    if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd1:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
+    if enablecmd2:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
@@ -59,184 +66,143 @@ def jomaremove():
             print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
-    if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd3:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
-    if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
         
-def jomaupdate():
+def jomaupdate(package_list, enablecmd1, enablecmd2, enablecmd3):
     command1 = ['scoop', 'update', package_list, '-y']
     command2 = ['choco', 'upgrade', package_list, '--yes']
     command3 = ['winget', 'upgrade', package_list, '-y']
-    if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd1:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
-    if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd2:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
-    if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd3:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
     
-def jomasearch():
+def jomasearch(package_list, enablecmd1, enablecmd2, enablecmd3):
     command1 = ['scoop', 'search', package_list]
     command2 = ['choco', 'search', package_list]
     command3 = ['winget', 'search', package_list]
-    if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd1:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
-    if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd2:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
-    if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd3:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
     
-def jomaexport():
+def jomaexport(enablecmd1, enablecmd2, enablecmd3):
     command1 = ['scoop', 'export', '>', listnames[0]]
     command2 = ['choco', 'export', listnames[1]]
     command3 = ['winget', 'export', '-o', listnames[2]]
-    if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd1:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
-    if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd2:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
-    if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd3:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
     
-def jomaimport():
+def jomaimport(enablecmd1, enablecmd2, enablecmd3):
     command1 = ['scoop', 'install', listnames[0]]
     command2 = ['choco', 'install', listnames[1]]
     command3 = ['winget', 'import', '-i', listnames[2]]
-    if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd1:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
-    if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd2:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
-    if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd3:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
 
-def jomaupgrade():
+def jomaupgrade(enablecmd1, enablecmd2, enablecmd3):
     command1 = ['scoop', 'update', '*', '-y']
     command2 = ['choco', 'upgrade', 'all', '--yes']
     command3 = ['winget', 'upgrade', '--all', '-y']
-    if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd1:
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
-    if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd2:
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
-    if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    if enablecmd3:
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
-    else:
-        time.sleep(0)
     
 def jomaerror():
     print('Action not supported')
@@ -260,34 +226,32 @@ def jomahelp():
 
 def runsubprocess(process, wait):
     runprocess = subprocess.Popen(process)
-    if wait == True:
+    if wait:
         runprocess.wait()
+    return runprocess.returncode
     
+
+# Function to add scoop buckets
+
+def addbuckets():
+     # Add all the buckets
+    
+    basebuckets = ['main', 'games', 'extras', 'versions', 'java', 'nonportable']
+    for bucket in basebuckets:
+        bucket = subprocess.Popen(bucket, shell=True)
+        bucket.wait()
+        
+    # Add my bucket
+    
+    runsubprocess(process='scoop' 'bucket' 'add' 'filmabem' 'https://github.com/FilmaBem2/applications.git', wait=True)
 
 # Check if the package managers are installed
 
 if os.path.exists(pml[2]):
     print('Scoop detected')
     enablecmd1 = True
+    addbuckets()
     
-    # Add all the buckets
-    
-    installgit = subprocess.Popen('scoop install git', shell=True)
-    installgit.wait()
-    mainbucket = subprocess.Popen('scoop bucket add main', shell=True)
-    mainbucket.wait()
-    gamesbucket = subprocess.Popen('scoop bucket add games', shell=True)
-    gamesbucket.wait()
-    extrasbucket = subprocess.Popen('scoop bucket add extras', shell=True)
-    extrasbucket.wait()
-    versionsbucket = subprocess.Popen('scoop bucket add versions', shell=True)
-    versionsbucket.wait()
-    javabucket = subprocess.Popen('scoop bucket add java', shell=True)
-    javabucket.wait()
-    nonportablebucket = subprocess.Popen('scoop bucket add nonportable', shell=True)
-    nonportablebucket.wait()
-    filmabembucket = subprocess.Popen('scoop bucket add filmabem https://github.com/FilmaBem2/applications.git', shell=True)
-    filmabembucket.wait()
 else:
     print('Scoop not detected')
     installscoopask = input('Do you want to install it? [Y/n]: ')
@@ -299,24 +263,8 @@ else:
         installscoop.wait()
         enablecmd1 = True
         
-        # Add all the buckets
+        addbuckets()
         
-        installgit = subprocess.Popen('scoop install git', shell=True)
-        installgit.wait()
-        mainbucket = subprocess.Popen('scoop bucket add main', shell=True)
-        mainbucket.wait()
-        gamesbucket = subprocess.Popen('scoop bucket add games', shell=True)
-        gamesbucket.wait()
-        extrasbucket = subprocess.Popen('scoop bucket add extras', shell=True)
-        extrasbucket.wait()
-        versionsbucket = subprocess.Popen('scoop', 'bucket', 'add', 'versions', shell=True)
-        versionsbucket.wait()
-        javabucket = subprocess.Popen('scoop bucket add java', shell=True)
-        javabucket.wait()
-        nonportablebucket = subprocess.Popen('scoop bucket add nonportable', shell=True)
-        nonportablebucket.wait()
-        filmabembucket = subprocess.Popen('scoop bucket add filmabem https://github.com/FilmaBem2/applications.git', shell=True)
-        filmabembucket.wait()
     elif installscoopask == 'n' or 'N':
         enablecmd1 = False
     else:
