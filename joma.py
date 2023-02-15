@@ -7,7 +7,6 @@ import shutil
 # Locations of package managers
 
 home = os.path.expanduser("~")
-packagemanagers = ['winget', 'choco', 'scoop']
 scooplist = home + '/scoop-packages.txt'
 chocolist = home + '/choco-packages.txt'
 wingetlist = home + '/winget-packages.txt'
@@ -23,7 +22,6 @@ chocofound = checkpackagemanagers('choco')
 wingetfound = checkpackagemanagers('winget')
 
 # Basic Functions
-
 
 def jomainstall(package_list):
     package_list = package_list.lower()
@@ -58,30 +56,20 @@ def jomaremove(package_list):
             print(f"{manager} not found on the system.")
         
 def jomaupdate(package_list):
-    scoopcommand = ['scoop', 'update', package_list, '-y']
-    chococommand = ['choco', 'upgrade', package_list, '--yes']
-    wingetcommand = ['winget', 'upgrade', package_list, '-y']
-    if scoopfound:
-        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
+    package_list = package_list.lower()
+    managers = ['scoop', 'choco', 'winget']
+    for manager in managers:
+        if checkpackagemanagers(manager):
+            command = [manager, 'update', package_list, '-y']
+            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, error = cmd.communicate()
+            if error:
+                print(f"An error occurred: {error.decode('utf-8')}")
+            else:
+                print(f"Output from {manager}:")
+                print(output.decode('utf-8'))
         else:
-            print(f"Output: {output.decode('utf-8')}")
-    if chocofound:
-        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
-    if wingetfound:
-        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
+            print(f"{manager} not found on the system.")
     
 def jomasearch(package_list):
     package_list = package_list.lower()
@@ -152,25 +140,16 @@ def jomaimport():
             print(f"Output: {output.decode('utf-8')}")
 
 def jomaupgrade():
-    scoopcommand = ['scoop', 'update', '*', '-y']
-    chococommand = ['choco', 'upgrade', 'all', '--yes']
-    wingetcommand = ['winget', 'upgrade', '--all', '-y']
+    commands = []
     if scoopfound:
-        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
+        commands.append(['scoop', 'update', '*', '-y'])
     if chocofound:
-        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
+        commands.append(['choco', 'upgrade', 'all', '--yes'])
     if wingetfound:
-        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        commands.append(['winget', 'upgrade', '--all', '-y'])
+    
+    for command in commands:
+        cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
