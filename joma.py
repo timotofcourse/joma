@@ -119,18 +119,30 @@ def jomainstall():
     command2 = ['choco', 'install', package_list, '--yes']
     command3 = ['winget', 'install', '-e', package_list, '-y']
     if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     
@@ -139,18 +151,30 @@ def jomaremove():
     command2 = ['choco', 'uninstall', package_list, '--yes']
     command3 = ['winget', 'uninstall', package_list, '-y']
     if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
         
@@ -159,18 +183,30 @@ def jomaupdate():
     command2 = ['choco', 'upgrade', package_list, '--yes']
     command3 = ['winget', 'upgrade', package_list, '-y']
     if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     
@@ -179,18 +215,30 @@ def jomasearch():
     command2 = ['choco', 'search', package_list]
     command3 = ['winget', 'search', package_list]
     if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     
@@ -199,18 +247,30 @@ def jomaexport():
     command2 = ['choco', 'export', listnames[1]]
     command3 = ['winget', 'export', '-o', listnames[2]]
     if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     
@@ -219,18 +279,30 @@ def jomaimport():
     command2 = ['choco', 'install', listnames[1]]
     command3 = ['winget', 'import', '-i', listnames[2]]
     if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
 
@@ -239,18 +311,30 @@ def jomaupgrade():
     command2 = ['choco', 'upgrade', 'all', '--yes']
     command3 = ['winget', 'upgrade', '--all', '-y']
     if enablecmd1 == True:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd2 == True:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     if enablecmd3 == True:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE)
-        print(cmd)
+        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        output, error = cmd.communicate()
+        if error:
+            print(f"An error occurred: {error.decode('utf-8')}")
+        else:
+            print(f"Output: {output.decode('utf-8')}")
     else:
         time.sleep(0)
     
