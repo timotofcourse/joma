@@ -19,14 +19,28 @@ enablecmd3 = False
 
 # Get arguments
 
+
 if len(sys.argv) < 2:
-    print("Usage: joma action package")
+    print("Usage: joma action [package]")
     print("Note: When you import/export package lists they will be stored/imported from your home folder")
     print("For help use: \"joma help\"")
     sys.exit(1)
-    
+
 action = sys.argv[1].lower()
-package_list = sys.argv[2:]
+
+if action == "upgrade" or "import" or "export" or "help":
+    # Perform upgrade action without package argument
+    print("Upgrading all packages...")
+else:
+    if len(sys.argv) < 3:
+        print("Usage: joma action package")
+        print("Note: When you import/export package lists they will be stored/imported from your home folder")
+        print("For help use: \"joma help\"")
+        sys.exit(1)
+
+    package_list = sys.argv[2:]
+    # Perform other actions with package argument
+    print(f"Performing {action} action on packages: {', '.join(package_list)}")
 
 # Check if the package managers are installed
 
