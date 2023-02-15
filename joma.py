@@ -83,7 +83,7 @@ def jomaupdate(package_list):
         else:
             print(f"Output: {output.decode('utf-8')}")
     
-def joma_search(package_list):
+def jomasearch(package_list):
     package_list = package_list.lower()
     managers = ['scoop', 'choco', 'winget']
     for manager in managers:
@@ -249,6 +249,7 @@ else:
     # Perform other actions with package argument
     
     print(f"Performing {action} action on packages: {', '.join(package_list)}")
+    
     for package_name in package_list:
         if action == "install":
             jomainstall(package_list=package_list)
