@@ -17,116 +17,8 @@ enablecmd1 = False
 enablecmd2 = False
 enablecmd3 = False
 
-# Get arguments
+# Basic Functions
 
-
-if len(sys.argv) < 2:
-    print("Usage: joma action [package]")
-    print("Note: When you import/export package lists they will be stored/imported from your home folder")
-    print("For help use: \"joma help\"")
-    sys.exit(1)
-
-action = sys.argv[1].lower()
-
-if action == "upgrade" or "import" or "export" or "help":
-    # Perform upgrade action without package argument
-    print("Upgrading all packages...")
-else:
-    if len(sys.argv) < 3:
-        print("Usage: joma action package")
-        print("Note: When you import/export package lists they will be stored/imported from your home folder")
-        print("For help use: \"joma help\"")
-        sys.exit(1)
-
-    package_list = sys.argv[2:]
-    # Perform other actions with package argument
-    print(f"Performing {action} action on packages: {', '.join(package_list)}")
-
-# Check if the package managers are installed
-
-if os.path.exists(pml[2]):
-    print('Scoop detected')
-    enablecmd1 = True
-    
-    # Add all the buckets
-    
-    installgit = subprocess.Popen('scoop install git', shell=True)
-    installgit.wait()
-    mainbucket = subprocess.Popen('scoop bucket add main', shell=True)
-    mainbucket.wait()
-    gamesbucket = subprocess.Popen('scoop bucket add games', shell=True)
-    gamesbucket.wait()
-    extrasbucket = subprocess.Popen('scoop bucket add extras', shell=True)
-    extrasbucket.wait()
-    versionsbucket = subprocess.Popen('scoop bucket add versions', shell=True)
-    versionsbucket.wait()
-    javabucket = subprocess.Popen('scoop bucket add java', shell=True)
-    javabucket.wait()
-    nonportablebucket = subprocess.Popen('scoop bucket add nonportable', shell=True)
-    nonportablebucket.wait()
-    filmabembucket = subprocess.Popen('scoop bucket add filmabem https://github.com/FilmaBem2/applications.git', shell=True)
-    filmabembucket.wait()
-else:
-    print('Scoop not detected')
-    installscoopask = input('Do you want to install it? [Y/n]: ')
-    if installscoopask == '' or 'y' or 'Y':
-        
-        # Install Scoop
-        
-        installscoop = subprocess.Popen('irm get.scoop.sh | iex', shell=True)
-        installscoop.wait()
-        enablecmd1 = True
-        
-        # Add all the buckets
-        
-        installgit = subprocess.Popen('scoop install git', shell=True)
-        installgit.wait()
-        mainbucket = subprocess.Popen('scoop bucket add main', shell=True)
-        mainbucket.wait()
-        gamesbucket = subprocess.Popen('scoop bucket add games', shell=True)
-        gamesbucket.wait()
-        extrasbucket = subprocess.Popen('scoop bucket add extras', shell=True)
-        extrasbucket.wait()
-        versionsbucket = subprocess.Popen('scoop', 'bucket', 'add', 'versions', shell=True)
-        versionsbucket.wait()
-        javabucket = subprocess.Popen('scoop bucket add java', shell=True)
-        javabucket.wait()
-        nonportablebucket = subprocess.Popen('scoop bucket add nonportable', shell=True)
-        nonportablebucket.wait()
-        filmabembucket = subprocess.Popen('scoop bucket add filmabem https://github.com/FilmaBem2/applications.git', shell=True)
-        filmabembucket.wait()
-    elif installscoopask == 'n' or 'N':
-        enablecmd1 = False
-    else:
-        print('unsupported')
-
-if os.path.exists(pml[1]):
-    print('Chocolatey detected')
-    enablecmd2 = True
-else:
-    print('Chocolatey not detected')
-    installchocoask = input('Do you want to install it? [Y/n]: ')
-    if installchocoask == '' or 'y' or 'Y':
-        
-        # Install Chocolatey
-        
-        installchoco = subprocess.Popen("[System.Net.ServicePointManager]::SecurityProtocol", "=",  "[System.Net.ServicePointManager]::SecurityProtocol", "-bor", "3072;", "iex", "((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))")
-        installchoco.wait()
-        enablecmd2 = True
-    elif installchocoask == 'n' or 'N':
-        enablecmd2 = False
-    else:
-        print('unsupported')
-
-if os.path.exists(pml[0]):
-    print('Winget detected')
-    enablecmd3 = True
-else:
-    print('Winget not detected')
-    print('Update your Windows and update your apps from microsoft store')
-    enablecmd3 = False
-
-# Basic functions
 
 def jomainstall():
     command1 = ['scoop', 'install', package_list, '-y']
@@ -368,6 +260,139 @@ def jomahelp():
           \n \n \n
           Note: The Exported lists will have the package manager name in the filename so if you want to import a list make sure the names are the sames as joma exported""")
 
+
+# Get arguments
+
+if len(sys.argv) < 2:
+    print("Usage: joma action [package]")
+    print("Note: When you import/export package lists they will be stored/imported from your home folder")
+    print("For help use: \"joma help\"")
+    sys.exit(1)
+
+action = sys.argv[1].lower()
+
+if action == "upgrade" or "import" or "export" or "help":
+    if action == "upgrade":
+        jomaupgrade()
+    elif action == "export":
+        jomaexport()
+    elif action == "import":
+        jomaimport()
+    elif action == "help":
+        jomahelp()
+else:
+    if len(sys.argv) < 3:
+        print("Usage: joma action package")
+        print("Note: When you import/export package lists they will be stored/imported from your home folder")
+        print("For help use: \"joma help\"")
+        sys.exit(1)
+
+    package_list = sys.argv[2:]
+    # Perform other actions with package argument
+    print(f"Performing {action} action on packages: {', '.join(package_list)}")
+    for package_name in package_list:
+        if action == "install":
+            jomainstall()
+        elif action == "remove":
+            jomaremove()
+        elif action == "uninstall":
+            jomaremove()
+        elif action == "update":
+            jomaupdate()
+        elif action == "search":
+            jomasearch()
+        else:
+            jomaerror()
+            sys.exit(1)
+
+
+# Check if the package managers are installed
+
+if os.path.exists(pml[2]):
+    print('Scoop detected')
+    enablecmd1 = True
+    
+    # Add all the buckets
+    
+    installgit = subprocess.Popen('scoop install git', shell=True)
+    installgit.wait()
+    mainbucket = subprocess.Popen('scoop bucket add main', shell=True)
+    mainbucket.wait()
+    gamesbucket = subprocess.Popen('scoop bucket add games', shell=True)
+    gamesbucket.wait()
+    extrasbucket = subprocess.Popen('scoop bucket add extras', shell=True)
+    extrasbucket.wait()
+    versionsbucket = subprocess.Popen('scoop bucket add versions', shell=True)
+    versionsbucket.wait()
+    javabucket = subprocess.Popen('scoop bucket add java', shell=True)
+    javabucket.wait()
+    nonportablebucket = subprocess.Popen('scoop bucket add nonportable', shell=True)
+    nonportablebucket.wait()
+    filmabembucket = subprocess.Popen('scoop bucket add filmabem https://github.com/FilmaBem2/applications.git', shell=True)
+    filmabembucket.wait()
+else:
+    print('Scoop not detected')
+    installscoopask = input('Do you want to install it? [Y/n]: ')
+    if installscoopask == '' or 'y' or 'Y':
+        
+        # Install Scoop
+        
+        installscoop = subprocess.Popen('irm get.scoop.sh | iex', shell=True)
+        installscoop.wait()
+        enablecmd1 = True
+        
+        # Add all the buckets
+        
+        installgit = subprocess.Popen('scoop install git', shell=True)
+        installgit.wait()
+        mainbucket = subprocess.Popen('scoop bucket add main', shell=True)
+        mainbucket.wait()
+        gamesbucket = subprocess.Popen('scoop bucket add games', shell=True)
+        gamesbucket.wait()
+        extrasbucket = subprocess.Popen('scoop bucket add extras', shell=True)
+        extrasbucket.wait()
+        versionsbucket = subprocess.Popen('scoop', 'bucket', 'add', 'versions', shell=True)
+        versionsbucket.wait()
+        javabucket = subprocess.Popen('scoop bucket add java', shell=True)
+        javabucket.wait()
+        nonportablebucket = subprocess.Popen('scoop bucket add nonportable', shell=True)
+        nonportablebucket.wait()
+        filmabembucket = subprocess.Popen('scoop bucket add filmabem https://github.com/FilmaBem2/applications.git', shell=True)
+        filmabembucket.wait()
+    elif installscoopask == 'n' or 'N':
+        enablecmd1 = False
+    else:
+        print('unsupported')
+
+if os.path.exists(pml[1]):
+    print('Chocolatey detected')
+    enablecmd2 = True
+else:
+    print('Chocolatey not detected')
+    installchocoask = input('Do you want to install it? [Y/n]: ')
+    if installchocoask == '' or 'y' or 'Y':
+        
+        # Install Chocolatey
+        
+        installchoco = subprocess.Popen("[System.Net.ServicePointManager]::SecurityProtocol", "=",  "[System.Net.ServicePointManager]::SecurityProtocol", "-bor", "3072;", "iex", "((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))")
+        installchoco.wait()
+        enablecmd2 = True
+    elif installchocoask == 'n' or 'N':
+        enablecmd2 = False
+    else:
+        print('unsupported')
+
+if os.path.exists(pml[0]):
+    print('Winget detected')
+    enablecmd3 = True
+else:
+    print('Winget not detected')
+    print('Update your Windows and update your apps from microsoft store')
+    enablecmd3 = False
+
+# Basic functions
+
+
 # Identify action and call the respective functions
 
 for package_name in package_list:
@@ -379,16 +404,8 @@ for package_name in package_list:
         jomaremove()
     elif action == "update":
         jomaupdate()
-    elif action == "upgrade":
-        jomaupgrade()
     elif action == "search":
         jomasearch()
-    elif action == "export":
-        jomaexport()
-    elif action == "import":
-        jomaimport()
-    elif action == "help":
-        jomahelp()
     else:
         jomaerror()
         sys.exit(1)
