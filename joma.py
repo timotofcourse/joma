@@ -26,25 +26,25 @@ def checkpackagemanagers(pm):
 
 
 def jomainstall(package_list, scoopfound, chocofound, wingetfound):
-    command1 = ['scoop', 'install'] + package_list + ['-y']
-    command2 = ['choco', 'install'] + package_list + ['--yes']
-    command3 = ['winget', 'install', '-e'] + package_list + ['-y']
+    scoopcommand = ['scoop', 'install'] + package_list + ['-y']
+    chococommand = ['choco', 'install'] + package_list + ['--yes']
+    wingetcommand = ['winget', 'install', '-e'] + package_list + ['-y']
     if scoopfound:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if chocofound:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if wingetfound:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
@@ -52,25 +52,25 @@ def jomainstall(package_list, scoopfound, chocofound, wingetfound):
             print(f"Output: {output.decode('utf-8')}")
     
 def jomaremove(package_list, scoopfound, chocofound, wingetfound):
-    command1 = ['scoop', 'uninstall', package_list, '-y']
-    command2 = ['choco', 'uninstall', package_list, '--yes']
-    command3 = ['winget', 'uninstall', package_list, '-y']
+    scoopcommand = ['scoop', 'uninstall', package_list, '-y']
+    chococommand = ['choco', 'uninstall', package_list, '--yes']
+    wingetcommand = ['winget', 'uninstall', package_list, '-y']
     if scoopfound:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if chocofound:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if wingetfound:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
@@ -78,25 +78,25 @@ def jomaremove(package_list, scoopfound, chocofound, wingetfound):
             print(f"Output: {output.decode('utf-8')}")
         
 def jomaupdate(package_list, scoopfound, chocofound, wingetfound):
-    command1 = ['scoop', 'update', package_list, '-y']
-    command2 = ['choco', 'upgrade', package_list, '--yes']
-    command3 = ['winget', 'upgrade', package_list, '-y']
+    scoopcommand = ['scoop', 'update', package_list, '-y']
+    chococommand = ['choco', 'upgrade', package_list, '--yes']
+    wingetcommand = ['winget', 'upgrade', package_list, '-y']
     if scoopfound:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if chocofound:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if wingetfound:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
@@ -104,25 +104,25 @@ def jomaupdate(package_list, scoopfound, chocofound, wingetfound):
             print(f"Output: {output.decode('utf-8')}")
     
 def jomasearch(package_list, scoopfound, chocofound, wingetfound):
-    command1 = ['scoop', 'search', package_list]
-    command2 = ['choco', 'search', package_list]
-    command3 = ['winget', 'search', package_list]
+    scoopcommand = ['scoop', 'search', package_list]
+    chococommand = ['choco', 'search', package_list]
+    wingetcommand = ['winget', 'search', package_list]
     if scoopfound:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if chocofound:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if wingetfound:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
@@ -130,25 +130,25 @@ def jomasearch(package_list, scoopfound, chocofound, wingetfound):
             print(f"Output: {output.decode('utf-8')}")
     
 def jomaexport(scoopfound, chocofound, wingetfound):
-    command1 = ['scoop', 'export', '>', listnames[0]]
-    command2 = ['choco', 'export', listnames[1]]
-    command3 = ['winget', 'export', '-o', listnames[2]]
+    scoopcommand = ['scoop', 'export', '>', listnames[0]]
+    chococommand = ['choco', 'export', listnames[1]]
+    wingetcommand = ['winget', 'export', '-o', listnames[2]]
     if scoopfound:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if chocofound:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if wingetfound:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
@@ -156,25 +156,25 @@ def jomaexport(scoopfound, chocofound, wingetfound):
             print(f"Output: {output.decode('utf-8')}")
     
 def jomaimport(scoopfound, chocofound, wingetfound):
-    command1 = ['scoop', 'install', listnames[0]]
-    command2 = ['choco', 'install', listnames[1]]
-    command3 = ['winget', 'import', '-i', listnames[2]]
+    scoopcommand = ['scoop', 'install', listnames[0]]
+    chococommand = ['choco', 'install', listnames[1]]
+    wingetcommand = ['winget', 'import', '-i', listnames[2]]
     if scoopfound:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if chocofound:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if wingetfound:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
@@ -182,25 +182,25 @@ def jomaimport(scoopfound, chocofound, wingetfound):
             print(f"Output: {output.decode('utf-8')}")
 
 def jomaupgrade(scoopfound, chocofound, wingetfound):
-    command1 = ['scoop', 'update', '*', '-y']
-    command2 = ['choco', 'upgrade', 'all', '--yes']
-    command3 = ['winget', 'upgrade', '--all', '-y']
+    scoopcommand = ['scoop', 'update', '*', '-y']
+    chococommand = ['choco', 'upgrade', 'all', '--yes']
+    wingetcommand = ['winget', 'upgrade', '--all', '-y']
     if scoopfound:
-        cmd = subprocess.run(command1, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if chocofound:
-        cmd = subprocess.run(command2, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
         else:
             print(f"Output: {output.decode('utf-8')}")
     if wingetfound:
-        cmd = subprocess.run(command3, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = cmd.communicate()
         if error:
             print(f"An error occurred: {error.decode('utf-8')}")
@@ -275,7 +275,9 @@ else:
         sys.exit(1)
 
     package_list = sys.argv[2:]
+    
     # Perform other actions with package argument
+    
     print(f"Performing {action} action on packages: {', '.join(package_list)}")
     for package_name in package_list:
         if action == "install":
