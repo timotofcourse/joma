@@ -13,19 +13,19 @@ chocolist = home + '/choco-packages.txt'
 wingetlist = home + '/winget-packages.txt'
 listnames = [scooplist, chocolist, wingetlist]
 
-scoopinstalled = False
-chocoinstalled = False
-wingetinstalled = False
-
-# Check for package managers
+#  Check for package managers
 
 def checkpackagemanagers(pm):
     return shutil.which(pm) is not None
 
+scoopfound = checkpackagemanagers('scoop')
+chocofound = checkpackagemanagers('choco')
+wingetfound = checkpackagemanagers('winget')
+
 # Basic Functions
 
 
-def jomainstall(package_list, scoopfound, chocofound, wingetfound):
+def jomainstall(package_list):
     scoopcommand = ['scoop', 'install'] + package_list + ['-y']
     chococommand = ['choco', 'install'] + package_list + ['--yes']
     wingetcommand = ['winget', 'install', '-e'] + package_list + ['-y']
@@ -51,7 +51,7 @@ def jomainstall(package_list, scoopfound, chocofound, wingetfound):
         else:
             print(f"Output: {output.decode('utf-8')}")
     
-def jomaremove(package_list, scoopfound, chocofound, wingetfound):
+def jomaremove(package_list):
     scoopcommand = ['scoop', 'uninstall', package_list, '-y']
     chococommand = ['choco', 'uninstall', package_list, '--yes']
     wingetcommand = ['winget', 'uninstall', package_list, '-y']
@@ -77,7 +77,7 @@ def jomaremove(package_list, scoopfound, chocofound, wingetfound):
         else:
             print(f"Output: {output.decode('utf-8')}")
         
-def jomaupdate(package_list, scoopfound, chocofound, wingetfound):
+def jomaupdate(package_list):
     scoopcommand = ['scoop', 'update', package_list, '-y']
     chococommand = ['choco', 'upgrade', package_list, '--yes']
     wingetcommand = ['winget', 'upgrade', package_list, '-y']
@@ -103,33 +103,23 @@ def jomaupdate(package_list, scoopfound, chocofound, wingetfound):
         else:
             print(f"Output: {output.decode('utf-8')}")
     
-def jomasearch(package_list, scoopfound, chocofound, wingetfound):
-    scoopcommand = ['scoop', 'search', package_list]
-    chococommand = ['choco', 'search', package_list]
-    wingetcommand = ['winget', 'search', package_list]
-    if scoopfound:
-        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
+def joma_search(package_list):
+    package_list = package_list.lower()
+    managers = ['scoop', 'choco', 'winget']
+    for manager in managers:
+        if checkpackagemanagers(manager):
+            command = [manager, 'search', package_list]
+            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, error = cmd.communicate()
+            if error:
+                print(f"An error occurred: {error.decode('utf-8')}")
+            else:
+                print(f"Output from {manager}:")
+                print(output.decode('utf-8'))
         else:
-            print(f"Output: {output.decode('utf-8')}")
-    if chocofound:
-        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
-    if wingetfound:
-        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
+            print(f"{manager} not found on this system.")
     
-def jomaexport(scoopfound, chocofound, wingetfound):
+def jomaexport():
     scoopcommand = ['scoop', 'export', '>', listnames[0]]
     chococommand = ['choco', 'export', listnames[1]]
     wingetcommand = ['winget', 'export', '-o', listnames[2]]
@@ -155,7 +145,7 @@ def jomaexport(scoopfound, chocofound, wingetfound):
         else:
             print(f"Output: {output.decode('utf-8')}")
     
-def jomaimport(scoopfound, chocofound, wingetfound):
+def jomaimport():
     scoopcommand = ['scoop', 'install', listnames[0]]
     chococommand = ['choco', 'install', listnames[1]]
     wingetcommand = ['winget', 'import', '-i', listnames[2]]
@@ -181,7 +171,7 @@ def jomaimport(scoopfound, chocofound, wingetfound):
         else:
             print(f"Output: {output.decode('utf-8')}")
 
-def jomaupgrade(scoopfound, chocofound, wingetfound):
+def jomaupgrade():
     scoopcommand = ['scoop', 'update', '*', '-y']
     chococommand = ['choco', 'upgrade', 'all', '--yes']
     wingetcommand = ['winget', 'upgrade', '--all', '-y']
@@ -260,11 +250,11 @@ action = sys.argv[1].lower()
 
 if action == "upgrade" or "import" or "export" or "help":
     if action == "upgrade":
-        jomaupgrade(scoopfound=scoopinstalled, chocofound=chocoinstalled, wingetfound=wingetinstalled)
+        jomaupgrade()
     elif action == "export":
-        jomaexport(scoopfound=scoopinstalled, chocofound=chocoinstalled, wingetfound=wingetinstalled)
+        jomaexport()
     elif action == "import":
-        jomaimport(scoopfound=scoopinstalled, chocofound=chocoinstalled, wingetfound=wingetinstalled)
+        jomaimport()
     elif action == "help":
         jomahelp()
 else:
@@ -281,15 +271,15 @@ else:
     print(f"Performing {action} action on packages: {', '.join(package_list)}")
     for package_name in package_list:
         if action == "install":
-            jomainstall(package_list=package_list, scoopfound=scoopinstalled, chocofound=chocoinstalled, wingetfound=wingetinstalled)
+            jomainstall(package_list=package_list)
         elif action == "remove":
-            jomaremove(package_list=package_list, scoopfound=scoopinstalled, chocofound=chocoinstalled, wingetfound=wingetinstalled)
+            jomaremove(package_list=package_list)
         elif action == "uninstall":
-            jomaremove(package_list=package_list, scoopfound=scoopinstalled, chocofound=chocoinstalled, wingetfound=wingetinstalled)
+            jomaremove(package_list=package_list)
         elif action == "update":
-            jomaupdate(package_list=package_list, scoopfound=scoopinstalled, chocofound=chocoinstalled, wingetfound=wingetinstalled)
+            jomaupdate(package_list=package_list)
         elif action == "search":
-            jomasearch(package_list=package_list, scoopfound=scoopinstalled, chocofound=chocoinstalled, wingetfound=wingetinstalled)
+            jomasearch(package_list=package_list)
         else:
             jomaerror()
             sys.exit(1)
