@@ -257,8 +257,9 @@ def jomahelp():
           search - Search for a package\n
           export - Exports the lists of installed packages through scoop, chocolatey and winget \n
           import - Imports the lists from previous installed packages from scoop, chocolatey and winget\n
-          \n \n \n
+          \n
           Note: The Exported lists will have the package manager name in the filename so if you want to import a list make sure the names are the sames as joma exported""")
+    sys.exit(1)
 
 
 # Get arguments
@@ -389,23 +390,3 @@ else:
     print('Winget not detected')
     print('Update your Windows and update your apps from microsoft store')
     enablecmd3 = False
-
-# Basic functions
-
-
-# Identify action and call the respective functions
-
-for package_name in package_list:
-    if action == "install":
-        jomainstall()
-    elif action == "remove":
-        jomaremove()
-    elif action == "uninstall":
-        jomaremove()
-    elif action == "update":
-        jomaupdate()
-    elif action == "search":
-        jomasearch()
-    else:
-        jomaerror()
-        sys.exit(1)
