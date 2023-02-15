@@ -29,7 +29,7 @@ def jomainstall(package_list):
     for manager in managers:
         if checkpackagemanagers(manager):
             command = [manager, 'install', package_list]
-            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,  capture_output=True)
             output, error = cmd.communicate()
             if error:
                 print(f"An error occurred: {error.decode('utf-8')}")
@@ -45,7 +45,7 @@ def jomaremove(package_list):
     for manager in managers:
         if checkpackagemanagers(manager):
             command = [manager, 'uninstall', package_list]
-            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,  capture_output=True)
             output, error = cmd.communicate()
             if error:
                 print(f"An error occurred: {error.decode('utf-8')}")
@@ -61,7 +61,7 @@ def jomaupdate(package_list):
     for manager in managers:
         if checkpackagemanagers(manager):
             command = [manager, 'update', package_list, '-y']
-            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,  capture_output=True)
             output, error = cmd.communicate()
             if error:
                 print(f"An error occurred: {error.decode('utf-8')}")
@@ -77,7 +77,7 @@ def jomasearch(package_list):
     for manager in managers:
         if checkpackagemanagers(manager):
             command = [manager, 'search', package_list]
-            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            cmd = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE,  capture_output=True)
             output, error = cmd.communicate()
             if error:
                 print(f"An error occurred: {error.decode('utf-8')}")
@@ -114,30 +114,19 @@ def jomaexport():
             print(f"Output: {output.decode('utf-8')}")
     
 def jomaimport():
-    scoopcommand = ['scoop', 'install', listnames[0]]
-    chococommand = ['choco', 'install', listnames[1]]
-    wingetcommand = ['winget', 'import', '-i', listnames[2]]
-    if scoopfound:
-        cmd = subprocess.run(scoopcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
-    if chocofound:
-        cmd = subprocess.run(chococommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
-    if wingetfound:
-        cmd = subprocess.run(wingetcommand, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        output, error = cmd.communicate()
-        if error:
-            print(f"An error occurred: {error.decode('utf-8')}")
-        else:
-            print(f"Output: {output.decode('utf-8')}")
+    commands = {
+        'scoop': ['install', listnames[0]],
+        'choco': ['install', listnames[1]],
+        'winget': ['import', '-i', listnames[2]],
+    }
+    for command, args in commands.items():
+        if shutil.which(command):
+            cmd = subprocess.run([command, *args], capture_output=True, text=True)
+            if cmd.returncode == 0:
+                print(f"Output for {command}: {cmd.stdout}")
+            else:
+                print(f"An error occurred for {command}: {cmd.stderr}")
+
 
 def jomaupgrade():
     commands = []
@@ -243,5 +232,4 @@ else:
         else:
             jomaerror()
             sys.exit(1)
-
 
