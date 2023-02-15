@@ -270,7 +270,7 @@ def jomahelp():
           \n \n \n
           Note: The Exported lists will have the package manager name in the filename so if you want to import a list make sure the names are the sames as joma exported""")
 
-# Identify action and add a temporary code for the actions
+# Identify action and call the respective functions
 
 for package_name in package_list:
     if action == "install":
