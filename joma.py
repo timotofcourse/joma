@@ -10,7 +10,7 @@ def printhelp():
           This are the options you can use and it's descriptions: \n
           Install       - Installs a Package \n
           Remove        - Removes/Uninstalls a Package \n
-          Uninstall     - Removes/Uninstalls a Package \n 
+          Uninstall     - Removes/Uninstalls a Package \n
           Search        - Searches for a Package \n
           Import        - Imports the Package Lists from a directory \n
           Export        - Exports the Package Lists to a directory \n
