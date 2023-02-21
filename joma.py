@@ -4,16 +4,25 @@ import sys
 import shutil
 import time
 
-printhelp = print("""
-                  
-                  """)
+def printhelp():
+    print("""
+          Welcome to Joma Wrapper. This is a Package Manager Wrapper to help you manage your packages. \n
+          This are the options you can use and it's descriptions: \n
+          Install       - Installs a Package \n
+          Remove        - Removes/Uninstalls a Package \n
+          Uninstall     - Removes/Uninstalls a Package \n 
+          Search        - Searches for a Package \n
+          Import        - Imports the Package Lists from a directory \n
+          Export        - Exports the Package Lists to a directory \n
+          Help          - Shows this help
+          """)
 
 # Define Arguments
 
 parser = argparse.ArgumentParser(description = "Joma is a package manager wrapper to help you manage the packages on your Windows system with 3 diffrent package managers.")
-parser.add_argument('action', metavar='action', type=str, help=printhelp)
-parser.add_argument('packages', metavar='package_list', type=list, help='Package Name(s)', required=False)
-parser.add_argument('file_path', metavar='file_path', type=str, help='Folder where the lists are located', required=False)
+parser.add_argument('action', type=str, help=printhelp)
+parser.add_argument('package_list', type=list, help='Package Name(s)', nargs='?', default=['tmp'])
+parser.add_argument('file_path', type=str, help='Folder where the lists are located', nargs='?', default='.')
 args = parser.parse_args()
 
 file_path = args.file_path
