@@ -12,6 +12,8 @@ def printhelp():
           Install       - Installs a Package \n
           Remove        - Removes/Uninstalls a Package \n
           Uninstall     - Removes/Uninstalls a Package \n
+          Update        - Updates a Package \n
+          Upgrade       - Updates all packages \n
           Search        - Searches for a Package \n
           Import        - Imports the Package Lists from a directory \n
           Export        - Exports the Package Lists to a directory \n
@@ -61,33 +63,54 @@ else:
 # Joma Functions
 
 def jomainstall(package_list):
-    time.sleep(0)
+    launchprocess(package_manager='scoop', action='install', args='-y')
+    launchprocess(package_manager='choco', action='install', args='-y')
+    launchprocess(package_manager='winget', action='install', args='-y')
     sys.exit(0)
 
 def jomaremove(package_list):
-    time.sleep(0)
+    launchprocess(package_manager='scoop', action='uninstall', args='-y')
+    launchprocess(package_manager='choco', action='uninstall', args='-y')
+    launchprocess(package_manager='winget', action='uninstall', args='-y')
     sys.exit(0)
     
 def jomasearch(package_list):
-    time.sleep(0)
+    launchprocess(package_manager='scoop', action='search', args='-y')
+    launchprocess(package_manager='choco', action='search', args='-y')
+    launchprocess(package_manager='winget', action='search', args='-y')
     sys.exit(0)
 
 def jomaupdate(package_list):
-    time.sleep(0)
+    launchprocess(package_manager='scoop', action='update', args='-y')
+    launchprocess(package_manager='choco', action='update', args='-y')
+    launchprocess(package_manager='winget', action='update', args='-y')
     sys.exit(0)
 
 def jomaupgrade():
-    time.sleep(0)
+    launchprocess(package_manager='scoop', action='upgrade', args='-y')
+    launchprocess(package_manager='choco', action='upgrade', args='-y')
+    launchprocess(package_manager='winget', action='upgrade', args='-y')
     sys.exit(0)
 
 def jomaimport(package_list):
-    time.sleep(0)
+    launchprocess(package_manager='scoop', action='import', args=package_list)
+    launchprocess(package_manager='choco', action='import', args=package_list)
+    launchprocess(package_manager='winget', action='import', args=package_list)
     sys.exit(0)
     
 def jomaexport(package_list):
-    time.sleep(0)
+    launchprocess(package_manager='scoop', action='export', args=package_list)
+    launchprocess(package_manager='choco', action='export', args=package_list)
+    launchprocess(package_manager='winget', action='export', args=package_list)
     sys.exit(0)
     
+def launchprocess(package_manager, action, packages, args):
+    command = package_manager, action, packages, args,
+    runcommand = subprocess.Popen(command, shell=True)
+    runcommand.communicate()
+    runcommand.wait()
+    
+
 # Logic for the package manager arguments
 
 if action == 'upgrade':
