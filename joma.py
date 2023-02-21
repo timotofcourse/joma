@@ -3,6 +3,7 @@ import os
 import sys
 import shutil
 import time
+import subprocess
 
 def printhelp():
     print("""
@@ -28,6 +29,34 @@ args = parser.parse_args()
 file_path = args.file_path
 package_list_file = args.package_list
 action = args.action
+
+# Check for installed package managers
+
+if shutil.which('scoop') is not None:
+    print('Scoop Found')
+    runscoop = True
+else:
+    print('Scoop not Found')
+    runscoop = False
+
+if shutil.which('choco') is not None:
+    print('Chocolatey Found')
+    runchoco = True
+else:
+    print('Chocolatey not Found')
+    runchoco = False
+
+if shutil.which('winget') is not None:
+    print('Winget Found')
+    runwinget = True
+else:
+    print('Winget not Found')
+    runwinget = False
+
+if shutil.which('sudo') is not None:
+    print('Sudo Found')
+else:
+    print('Sudo not Found')
 
 # Joma Functions
 
