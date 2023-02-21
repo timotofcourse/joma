@@ -23,7 +23,7 @@ def printhelp():
 parser = argparse.ArgumentParser(description = "Joma is a package manager wrapper to help you manage the packages on your Windows system with 3 diffrent package managers.")
 parser.add_argument('action', type=str, help=printhelp)
 parser.add_argument('package_list', type=list, help='Package Name(s)', nargs='?', default=['tmp'])
-parser.add_argument('file_path', type=str, help='Folder where the lists are located', nargs='?', default='.')
+parser.add_argument('--file_path', '-f', type=str, help='Folder where the lists are located')
 args = parser.parse_args()
 
 file_path = args.file_path
@@ -62,24 +62,31 @@ else:
 
 def jomainstall(package_list):
     time.sleep(0)
+    sys.exit(0)
 
 def jomaremove(package_list):
     time.sleep(0)
+    sys.exit(0)
     
 def jomasearch(package_list):
     time.sleep(0)
+    sys.exit(0)
 
 def jomaupdate(package_list):
     time.sleep(0)
+    sys.exit(0)
 
 def jomaupgrade():
     time.sleep(0)
+    sys.exit(0)
 
 def jomaimport(package_list):
     time.sleep(0)
+    sys.exit(0)
     
 def jomaexport(package_list):
     time.sleep(0)
+    sys.exit(0)
     
 # Logic for the package manager arguments
 
