@@ -2,7 +2,7 @@ import shutil
 import os
 import sys
 
-joma_path = 'C:\\Program Files\\Joma\joma.exe'
+joma_path = 'C:\\Program Files\\Joma\\joma.exe'
 temp_joma = 'joma.exe'
 
 if os.path.exists('C:\\Program Files\\Joma\\'):
