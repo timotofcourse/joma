@@ -3,7 +3,7 @@ import json
 import sqlite3
 
 repo_file_path = "joma-repos.json"
-file_extension = "py"
+file_extension = "amoj"
 pat = "YOUR_PAT_HERE"
 api_endpoint = "https://api.github.com"
 headers = {"Authorization": f"Bearer {pat}"}
@@ -13,10 +13,6 @@ headers = {"Authorization": f"Bearer {pat}"}
 with open(repo_file_path, "r") as f:
     repos = json.load(f)
 
-
-conn = sqlite3.connect("files.db")
-c = conn.cursor()
-c.execute("CREATE TABLE IF NOT EXISTS files (name TEXT, url TEXT)")
 
 # Loop through the repositories and send a GET request to the search endpoint to find the files
 
@@ -31,10 +27,5 @@ for repo in repos:
             file_name = item["name"]
             file_url = item["html_url"]
             print(f"Found file '{file_name}' in repository '{owner}/{name}'")
-            c.execute("INSERT INTO files (name, url) VALUES (?, ?)", (file_name, file_url))
     else:
         print(f"No files found with the extension '{file_extension}' in the '{owner}/{name}' repository.")
-
-
-conn.commit()
-conn.close()
