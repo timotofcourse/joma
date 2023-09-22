@@ -34,7 +34,9 @@ def is_parallel_downloads_enabled():
     except FileNotFoundError:
 
         return False
-    
+
+# Enable parallel downloads
+ 
 def enable_parallel_downloads():
 
     try:
@@ -51,7 +53,6 @@ def enable_parallel_downloads():
 
         print("Error: pacman.conf not found.")
         sys.exit(1)
-
 
 # Add repository for pacman
 
