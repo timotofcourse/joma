@@ -148,6 +148,18 @@ def add_aur_support():
 
             print("Invalid choice. Please enter 'yay' or 'paru'.")
 
+# Seach Packages
+
+def search_packages(package_name):
+
+    try:
+
+        os.system(f"pacman -Ss {package_name}")
+
+    except Exception as e:
+
+        print(f"Search failed: {str(e)}")
+
 # Install Packages
 
 def install_packages(package_names, aur_helper):
@@ -222,6 +234,24 @@ def update_packages(aur_helper):
     else:
         pass
 
+# list installed packages
+
+def list_installed_packages(output_file=None):
+
+    try:
+        
+        if output_file:
+
+            os.system(f"pacman -Q > {output_file}")
+
+        else:
+
+            os.system("pacman -Q")
+    
+    except Exception as e:
+
+        print(f"Failed to list the installed packages: {str(e)}")
+
 
 # Fix pacman keys (usefull for old iso instalations of if the system was not updated in long time)
 
@@ -249,9 +279,10 @@ if __name__ == "__main__":
     # Set the arguments for the wrapper
 
     parser = argparse.ArgumentParser(description="Pacman wrapper with AUR support.")
-    parser.add_argument("action", choices=["install", "add-aur-support", "remove", "uninstall", "update", "upgrade", "fix-keys"], help="Action to perform")
+    parser.add_argument("action", choices=["install", "add-aur-support", "remove", "uninstall", "update", "upgrade", "fix-keys", "search", "list-installed"], help="Action to perform")
     parser.add_argument("packages", nargs="*", help="Package names to install")
     parser.add_argument("--aur", choices=["yay", "paru"], help="AUR helper to use for package installation (only use for instalation)")
+    parser.add_argument("--file", help="Export the list of installed packages to a file (Only use with the list-installed action)")
     parser.epilog = "\nThis pacman wrapper has super cow powers."
     args = parser.parse_args()
 
@@ -265,5 +296,9 @@ if __name__ == "__main__":
         remove_packages(args.packages)
     elif args.action == "fix-keys":
         fix_pacman_keys()
+    elif args.action == "search":
+        search_packages(args.package)
+    elif args.action == "list-installed":
+        list_installed_packages(args.file)
     elif args.action == "add-aur-support":
         add_aur_support()
