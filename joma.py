@@ -82,7 +82,7 @@ def check_and_install_git():
     if result != 0:
 
         print("Git is not installed. Installing git...")
-        os.system("sudo pacman -S git")
+        os.system("pacman -S git")
 
 # Install an AUR helper
 
