@@ -4,7 +4,31 @@ import argparse
 import os
 import threading
 
+parser = argparse.ArgumentParser(description='Package manager for Arch based systems that can use aur if needed', epilog='Joma has super autistic powers')
 
+subparsers = parser.add_subparsers(title='subcommands', dest='subcommand')
+parser_install = subparsers.add_parser('install', help='Install packages')
+parser_install2 = subparsers.add_parser('-S', help='Install packages')
+parser_install.add_argument('packages', nargs='+', help='Packages to install')
+parser_install2.add_argument('packages', nargs='+', help='ackages to install')
+
+parser_remove = subparsers.add_parser('remove', help='Remove packages')
+parser_remove2 = subparsers.add_parser('-R', help='Remove packages')
+parser_remove.add_argument('packages', nargs='+', help='Packages to remove')
+parser_remove2.add_argument('packages', nargs='+', help='Packages to remove')
+
+parser_remove_with_deps = subparsers.add_parser('remove_with_deps', help='Remove packages with dependencies')
+parser_remove_with_deps2 = subparsers.add_parser('-Rncss', help='Remove packages with dependencies')
+parser_remove_with_deps.add_argument('packages', nargs='+', help='Packages to remove with dependencies')
+parser_remove_with_deps2.add_argument('packages', nargs='+', help='Packages to remove with dependencies')
+
+parser_update_repos = subparsers.add_parser('update', help='Update repositories')
+parser_update_repos2 = subparsers.add_parser('-Sy', help='Update repositories')
+
+parser_upgrade = subparsers.add_parser('upgrade',help='Upgrade packages')
+parser_upgrade = subparsers.add_parser('-Syyu',help='Upgrade packages')
+
+args = parser.parse_args()
 
 def install_packages(packages):
 
