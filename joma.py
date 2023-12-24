@@ -12,6 +12,14 @@ parser_install2 = subparsers.add_parser('-S', help='Install packages')
 parser_install.add_argument('packages', nargs='+', help='Packages to install')
 parser_install2.add_argument('packages', nargs='+', help='ackages to install')
 
+
+subparsers = parser.add_subparsers(title='subcommands', dest='subcommand')
+parser_search = subparsers.add_parser('search', help='Install packages')
+parser_search2 = subparsers.add_parser('-Ss', help='Install packages')
+parser_search.add_argument('packages', nargs='+', help='Packages to install')
+parser_search2.add_argument('packages', nargs='+', help='ackages to install')
+
+
 parser_remove = subparsers.add_parser('remove', help='Remove packages')
 parser_remove2 = subparsers.add_parser('-R', help='Remove packages')
 parser_remove.add_argument('packages', nargs='+', help='Packages to remove')
@@ -88,10 +96,10 @@ def remove_packages_with_deps(packages):
 
                 try:
                     os.system(f'flatpak remove {package_list} -y')
+                    print(f'{package_list} Removed')
                 except Exception as e:
-                    print(f'Error: Can\'t find {package_list} on any flatpak repo')
-    else:
-        print("No packages provided for installation")
+
+                    print(f'Packages {package_list} not found')
 
 def update_repos():
 
@@ -105,6 +113,27 @@ def native_pkgs_upgrade():
 
 def flat_pkgs_upgrade():
     os.system('flatpak update')
+
+def search(packages):
+
+    package_list = ' '.join(packages)
+    try:
+        os.system(f'sudo pacman -Ss {package_list}')
+    except Exception as e:
+        print(f'Error: Can\'t find the packages {package_list} {e} on Pacman repos, trying AUR...')
+
+        try:
+            os.system(f'yay -Ss {package_list}')
+        except Exception as e:
+            print(f'Error: Can\'t find the packages {package_list} {e} on AUR... Trying flatpak')
+
+            try:
+                os.system(f'flatpak search {package_list} -y')
+            except Exception as e:
+                print(f'Error: Can\'t find {package_list} on any flatpak repo')
+    else:
+        print(f"No packagesavailable for {package_list}")
+
 
 def upgrade_packages():
 
