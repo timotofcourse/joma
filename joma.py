@@ -177,7 +177,7 @@ def search(packages):
 
                 print(f'Error: Can\'t find {package_list} on any flatpak repo')
     else:
-        
+
         print(f"No packagesavailable for {package_list}")
 
 
@@ -198,5 +198,5 @@ def upgrade_packages():
 
     except Exception as e:
 
-        print('Cannot update: {e}')
+        print(f'Cannot update: {e}')
 
