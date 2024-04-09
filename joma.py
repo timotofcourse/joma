@@ -4,18 +4,15 @@ import argparse
 import os
 import sys
 import shutil
+import time
+import threading
 from ruamel.yaml import YAML
 
 # Load config file
 
-home = os.path.expanduser('~')
-config_file = '/.config/joma-config.yaml'
-
 yaml = YAML(typ='safe')
-with open(config_file, 'r', encoding='utf-8') as yaml_file:
+with open('config.yaml', 'r', encoding='utf-8') as yaml_file:
     data = yaml.load(yaml_file)
-
-aur_helper = data['aur_helper']
 
 # Check if parallel downloads are enabled and if not enable 16 parallel downloads
 
@@ -96,20 +93,20 @@ def check_and_install_git():
 
 # Install an AUR helper
 
-def install_aur_helper(aur_helper):
+def install_aur_helper(helper_name):
 
-    print(f"Installing {aur_helper} from AUR...")
+    print(f"Installing {helper_name} from AUR...")
 
     # Clone the AUR helper's Git repository
 
-    os.system(f"git clone https://aur.archlinux.org/{aur_helper}.git")
-    os.chdir(aur_helper)
+    os.system(f"git clone https://aur.archlinux.org/{helper_name}.git")
+    os.chdir(helper_name)
     
-    # Check for and install dependencies and make dependencies then compile and install the package
+    # Check for and install dependencies and make dependencies
 
     os.system("makepkg -sri --needed --noconfirm")
     
-    print(f"{aur_helper} installed.")
+    print(f"{helper_name} installed.")
 
 
 # Add AUR support
@@ -118,36 +115,47 @@ def add_aur_support():
 
     check_and_install_git()
     
-    # Check if the selecter aur helper is installed
+    # Check if yay and/or paru are installed
 
-    result = os.system(f"which {aur_helper} > /dev/null 2>&1")
+    result = os.system("which yay > /dev/null 2>&1")
 
     if result == 0:
 
-        print(f"{aur_helper} is installed.")
+        print("Yay is installed.")
 
+        return
+
+    result = os.system("which paru > /dev/null 2>&1")
+
+    if result == 0:
+
+        print("Paru is installed.")
+
+        return
+
+    # If neither Yay nor Paru is installed, prompt the user to choose one
 
     while True:
 
-        choice = input("No AUR helper is installed. Do you want to install the AUR helper defined on the config? (Y/n): ").strip().lower()
+        choice = input("Neither Yay nor Paru is installed. Do you want to install Yay or Paru? (yay/paru): ").strip().lower()
 
-        if choice == "y":
+        if choice == "yay":
 
-            install_aur_helper(aur_helper)
+            install_aur_helper("yay")
+
+            return
         
-        elif choice == "n":
+        elif choice == "paru":
 
-            print('No AUR helper will be installed')
-        
-        elif choice == '':
-            
-            install_aur_helper(aur_helper)
+            install_aur_helper("paru")
+
+            return
         
         else:
 
-            print("Unexpected error")
+            print("Invalid choice. Please enter 'yay' or 'paru'.")
 
-# Search Packages
+# Seach Packages
 
 def search_packages(package_name):
 
@@ -228,6 +236,10 @@ def update_packages(aur_helper):
             print(f"Updating packages from AUR using {aur_helper}...")
             os.system(f"{aur_helper} -Syyu --noconfirm")
 
+        else:
+            pass
+    else:
+        pass
 
 # list installed packages
 
@@ -248,7 +260,7 @@ def list_installed_packages(output_file=None):
         print(f"Failed to list the installed packages: {str(e)}")
 
 
-# Fix pacman keys (useful for old iso instalations of if the system was not updated in long time)
+# Fix pacman keys (usefull for old iso instalations of if the system was not updated in long time)
 
 def fix_pacman_keys():
     
@@ -276,7 +288,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Pacman wrapper with AUR support.")
     parser.add_argument("action", choices=["install", "add-aur-support", "remove", "uninstall", "update", "upgrade", "fix-keys", "search", "list-installed"], help="Action to perform")
     parser.add_argument("packages", nargs="*", help="Package names to install or remove")
-    parser.add_argument("--aur", help="AUR helper to use for package installation (only use for instalation)")
+    parser.add_argument("--aur", choices=["yay", "paru"], help="AUR helper to use for package installation (only use for instalation)")
     parser.add_argument("--file", help="Export the list of installed packages to a file (Only use with the list-installed action)")
     parser.epilog = "\nThis pacman wrapper has super cow powers."
     args = parser.parse_args()
