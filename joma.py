@@ -4,8 +4,16 @@ import argparse
 import os
 import sys
 import shutil
-import time
-import threading
+from ruamel.yaml import YAML
+
+# Load config file
+
+home = os.path.expanduser('~')
+config_file = '/.config/joma-config.yaml'
+
+yaml = YAML(typ='safe')
+with open(config_file, 'r', encoding='utf-8') as yaml_file:
+    data = yaml.load(yaml_file)
 
 # Check if parallel downloads are enabled and if not enable 16 parallel downloads
 
@@ -280,7 +288,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Pacman wrapper with AUR support.")
     parser.add_argument("action", choices=["install", "add-aur-support", "remove", "uninstall", "update", "upgrade", "fix-keys", "search", "list-installed"], help="Action to perform")
-    parser.add_argument("packages", nargs="*", help="Package names to install")
+    parser.add_argument("packages", nargs="*", help="Package names to install or remove")
     parser.add_argument("--aur", choices=["yay", "paru"], help="AUR helper to use for package installation (only use for instalation)")
     parser.add_argument("--file", help="Export the list of installed packages to a file (Only use with the list-installed action)")
     parser.epilog = "\nThis pacman wrapper has super cow powers."
