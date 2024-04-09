@@ -4,8 +4,6 @@ import argparse
 import os
 import sys
 import shutil
-import time
-import threading
 from ruamel.yaml import YAML
 
 # Load config file
