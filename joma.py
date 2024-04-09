@@ -8,9 +8,14 @@ from ruamel.yaml import YAML
 
 # Load config file
 
+home = os.path.expanduser('~')
+config_file = '/.config/joma-config.yaml'
+
 yaml = YAML(typ='safe')
-with open('config.yaml', 'r', encoding='utf-8') as yaml_file:
+with open(config_file, 'r', encoding='utf-8') as yaml_file:
     data = yaml.load(yaml_file)
+
+aur_helper = data['aur_helper']
 
 # Check if parallel downloads are enabled and if not enable 16 parallel downloads
 
@@ -115,7 +120,7 @@ def add_aur_support():
     
     # Check if yay and/or paru are installed
 
-    result = os.system("which yay > /dev/null 2>&1")
+    result = os.system(f"which {aur_helper} > /dev/null 2>&1")
 
     if result == 0:
 
