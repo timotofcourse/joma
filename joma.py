@@ -172,22 +172,19 @@ def install_packages(package_names, is_aur_helper_selected):
 
         if aur_helper:
             
-            result = os.system(f"which {aur_helper} > /dev/null 2>&1")
-
-            if result == 0:
-
-                print(f"Installing packages: {', '.join(package_names)} from AUR using {aur_helper}...")
-                os.system(f"{aur_helper} -S --needed --noconfirm {' '.join(package_names)}")
-
+            if getpass.getuser() == 'root':
+                
+                print('You can\'t build AUR packages as root for security reasons, do it as a regular user')
+                
             else:
+                
+                result = os.system(f"which {aur_helper} > /dev/null 2>&1")
 
-                print(f"{aur_helper} is not installed. Falling back to pacman for installation...")
+                if result == 0:
 
-                if not is_parallel_downloads_enabled():
+                    print(f"Installing packages: {', '.join(package_names)} from AUR using {aur_helper}...")
+                    os.system(f"{aur_helper} -S --needed --noconfirm {' '.join(package_names)}")
 
-                    enable_parallel_downloads()
-
-                os.system(f"pacman -S {' '.join(package_names)}")
 
         else:
 
