@@ -1,0 +1,25 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: archlinux:latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Prepare Environment
+      run: |
+        pacman -Syu --noconfirm --needed base-devel git
+
+    - name: Build package
+      run: |
+        makepkg

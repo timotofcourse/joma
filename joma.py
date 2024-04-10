@@ -2,201 +2,315 @@
 
 import argparse
 import os
-import threading
+import sys
+import shutil
+from ruamel.yaml import YAML
+import getpass
 
-parser = argparse.ArgumentParser(description='Package manager for Arch based systems that can use aur if needed', epilog='Joma has super autistic powers')
+# Load config file
 
-subparsers = parser.add_subparsers(title='subcommands', dest='subcommand')
-parser_install = subparsers.add_parser('install', help='Install packages')
-parser_install2 = subparsers.add_parser('-S', help='Install packages')
-parser_install.add_argument('packages', nargs='+', help='Packages to install')
-parser_install2.add_argument('packages', nargs='+', help='ackages to install')
+home = os.path.expanduser('~')
+config_file = home + '/.config/joma-config.yaml'
 
+yaml = YAML(typ='safe')
+with open(config_file, 'r', encoding='utf-8') as yaml_file:
+    data = yaml.load(yaml_file)
 
-subparsers = parser.add_subparsers(title='subcommands', dest='subcommand')
-parser_search = subparsers.add_parser('search', help='Install packages')
-parser_search2 = subparsers.add_parser('-Ss', help='Install packages')
-parser_search.add_argument('packages', nargs='+', help='Packages to install')
-parser_search2.add_argument('packages', nargs='+', help='ackages to install')
+aur_helper = data['aur_helper']
 
+# Check if parallel downloads are enabled and if not enable 16 parallel downloads
 
-parser_remove = subparsers.add_parser('remove', help='Remove packages')
-parser_remove2 = subparsers.add_parser('-R', help='Remove packages')
-parser_remove.add_argument('packages', nargs='+', help='Packages to remove')
-parser_remove2.add_argument('packages', nargs='+', help='Packages to remove')
-
-parser_remove_with_deps = subparsers.add_parser('remove_with_deps', help='Remove packages with dependencies')
-parser_remove_with_deps2 = subparsers.add_parser('-Rncss', help='Remove packages with dependencies')
-parser_remove_with_deps.add_argument('packages', nargs='+', help='Packages to remove with dependencies')
-parser_remove_with_deps2.add_argument('packages', nargs='+', help='Packages to remove with dependencies')
-
-parser_update_repos = subparsers.add_parser('update', help='Update repositories')
-parser_update_repos2 = subparsers.add_parser('-Sy', help='Update repositories')
-
-parser_upgrade = subparsers.add_parser('upgrade',help='Upgrade packages')
-parser_upgrade = subparsers.add_parser('-Syyu',help='Upgrade packages')
-
-args = parser.parse_args()
-
-def install_packages(packages):
-
-    if packages:
-
-        package_list = ' '.join(packages)
-
-        try:
-
-            os.system(f'sudo pacman -S --needed --noconfirm {package_list}')
-
-        except Exception as e:
-
-            print(f'Error: Can\'t find the packages {package_list} {e} on Pacman repos, trying AUR...')
-
-            try:
-
-                os.system(f'yay -S --needed --noconfirm {package_list}')
-
-            except Exception as e:
-
-                print(f'Error: Can\'t find the packages {package_list} {e} on AUR... Trying flatpak')
-
-                try:
-
-                    os.system(f'flatpak install {package_list} -y')
-
-                except Exception as e:
-
-                    print(f'Error: Can\'t find {package_list} on any flatpak repo')
-    else:
-
-        print("No packages provided for installation")
-
-def remove_packages(packages):
-
-    if packages:
-
-        package_list = ' '.join(packages)
-
-        try:
-
-            os.system(f'sudo pacman -R --needed --noconfirm{package_list}')
-
-        except Exception as e:
-
-            print(f'Error: Can\'t find the packages {package_list} {e} on Pacman repos, trying AUR...')
-
-            try:
-
-                os.system(f'yay -R --needed --noconfirm {package_list}')
-
-            except Exception as e:
-
-                print(f'Error: Can\'t find the packages {package_list} {e} on AUR... Trying flatpak')
-
-                try:
-
-                    os.system(f'flatpak remove {package_list} -y')
-
-                except Exception as e:
-
-                    print(f'Error: Can\'t find {package_list} on any flatpak repo')
-
-    else:
-
-        print("No packages provided for installation")
-
-def remove_packages_with_deps(packages):
-
-    if packages:
-
-        package_list = ' '.join(packages)
-
-        try:
-
-            os.system(f'sudo pacman -Rcnss --needed --noconfirm{package_list}')
-
-        except Exception as e:
-
-            print(f'Error: Can\'t find the packages {package_list} {e} on Pacman repos, trying AUR...')
-
-            try:
-
-                os.system(f'yay -Rcnss --needed --noconfirm {package_list}')
-
-            except Exception as e:
-
-                print(f'Error: Can\'t find the packages {package_list} {e} on AUR... Trying flatpak')
-
-                try:
-
-                    os.system(f'flatpak remove {package_list} -y')
-                    print(f'{package_list} Removed')
-
-                except Exception as e:
-
-                    print(f'Packages {package_list} not found')
-
-def update_repos():
-
-    os.system('sudo pacman -Sy')
-    os.system('yay -Sy')
-
-def native_pkgs_upgrade():
-
-    os.system('sudo pacman -Syyu')
-    os.system('yay -Syyu')
-
-def flat_pkgs_upgrade():
-    os.system('flatpak update')
-
-def search(packages):
-
-    package_list = ' '.join(packages)
+def is_parallel_downloads_enabled():
 
     try:
 
-        os.system(f'sudo pacman -Ss {package_list}')
+        pacman_conf = open("/etc/pacman.conf", "r").read()
 
-    except Exception as e:
+        if "ParallelDownloads" in pacman_conf:
 
-        print(f'Error: Can\'t find the packages {package_list} {e} on Pacman repos, trying AUR...')
+            lines = pacman_conf.split("\n")
 
-        try:
+            for line in lines:
 
-            os.system(f'yay -Ss {package_list}')
+                if line.strip().startswith("ParallelDownloads") and "=" in line:
 
-        except Exception as e:
+                    value = line.split("=")[1].strip()
 
-            print(f'Error: Can\'t find the packages {package_list} {e} on AUR... Trying flatpak')
+                    if value.isdigit() and int(value) > 0:
 
-            try:
+                        return True
+                    
+        return False
+    
+    except FileNotFoundError:
 
-                os.system(f'flatpak search {package_list} -y')
+        return False
 
-            except Exception as e:
-
-                print(f'Error: Can\'t find {package_list} on any flatpak repo')
-    else:
-
-        print(f"No packagesavailable for {package_list}")
-
-
-def upgrade_packages():
-
-    nativepkgs = threading.Thread(target=native_pkgs_upgrade)
-    flatpkgs = threading.Thread(targer=flat_pkgs_upgrade)
+# Enable parallel downloads
+ 
+def enable_parallel_downloads():
 
     try:
 
-        nativepkgs.start()
-        flatpkgs.start()
+        with open("/etc/pacman.conf", "a") as pacman_conf:
 
-        nativepkgs.join()
-        flatpkgs.join()
+            if not is_parallel_downloads_enabled():
 
-        print('Upgraded packages')
+                pacman_conf.write("ParallelDownloads = 16\n")
+
+        print("Parallel downloads enabled.")
+
+    except FileNotFoundError:
+
+        print("Error: pacman.conf not found.")
+        sys.exit(1)
+
+# Add repository for pacman
+
+def add_repository(repo_name, repo_url):
+
+    try:
+
+        with open("/etc/pacman.conf", "a") as pacman_conf:
+
+            pacman_conf.write(f"[{repo_name}]\n")
+
+            pacman_conf.write(f"Server = {repo_url}\n")
+
+        print(f"Repository '{repo_name}' added.")
+
+    except FileNotFoundError:
+
+        print("Error: pacman.conf not found.")
+        sys.exit(1)
+
+# Check if git is installed and install it
+
+def check_and_install_git():
+
+    result = os.system("which git > /dev/null 2>&1")
+
+    if result != 0:
+
+        print("Git is not installed. Installing git...")
+        os.system("pacman -S git")
+
+# Install an AUR helper
+
+def install_aur_helper(helper_name):
+
+    print(f"Installing {helper_name} from AUR...")
+
+    # Clone the AUR helper's Git repository
+
+    os.system(f"git clone https://aur.archlinux.org/{helper_name}.git")
+    os.chdir(helper_name)
+    
+    # Check for and install dependencies and make dependencies
+
+    os.system("makepkg -sri --needed --noconfirm")
+    
+    print(f"{helper_name} installed.")
+
+
+# Add AUR support
+
+def add_aur_support():
+
+    check_and_install_git()
+    
+    # Check if the selected AUR helper is installed
+
+    result = os.system(f"which {aur_helper} > /dev/null 2>&1")
+
+    if result == 0:
+
+        print(f"{aur_helper} is installed.")
+
+        return
+
+    # If the selected AUR helper is installed, prompt the user to choose one
+
+    while True:
+
+        choice = input(f"The {aur_helper} isn't installed. Do you want to install {aur_helper}? (Y/n): ").strip().lower()
+
+        if choice == "y":
+
+            install_aur_helper(aur_helper)
+
+            return
+        
+        elif choice == "":
+
+            install_aur_helper(aur_helper)
+
+            return
+        
+        elif choice == 'n':
+            
+            return Exception
+        
+
+# Search Packages
+
+def search_packages(package_name):
+
+    try:
+
+        os.system(f"pacman -Ss {package_name}")
 
     except Exception as e:
 
-        print(f'Cannot update: {e}')
+        print(f"Search failed: {str(e)}")
 
+# Install Packages
+
+def install_packages(package_names, aur=None):
+    
+    if not is_parallel_downloads_enabled():
+
+        enable_parallel_downloads()
+
+    if len(package_names) == 0:
+        print('No packages to install This is how to use this action')
+        print("Usage: joma install <package1> <package2> ...")
+        print("Usage: joma install <package1> <package2> ... --aur")
+        sys.exit(1)
+
+    if aur is not None:
+            
+        if getpass.getuser() == 'root':
+                
+            print('You can\'t build AUR packages as root for security reasons, do it as a regular user')
+            sys.exit(1)
+                
+        else:
+                
+            result = os.system(f"which {aur_helper} > /dev/null 2>&1")
+
+            if result == 0:
+
+                print(f"Installing packages: {', '.join(package_names)} from AUR using {aur_helper}...")
+                os.system(f"{aur_helper} -S --needed --noconfirm {' '.join(package_names)}")
+    else:
+
+        if getpass.getuser() == 'root':
+                
+            print(f"Installing packages: {', '.join(package_names)} from official repositories...")
+
+
+            os.system(f"pacman -S {' '.join(package_names)}")
+                
+        else:
+                
+            print('This action can only be performed as root (Except when using the --aur argument)')
+
+
+# Remove packages
+
+def remove_packages(package_names):
+    
+    
+    if len(package_names) == 0:
+        print('No packages to remove This is how to use this action')
+        print("Usage: joma remove <package1> <package2> ...")
+        print("Usage: joma uninstall <package1> <package2> ...")
+        sys.exit(1)
+
+    print(f"Removing {package_names} from the system")
+    os.system(f"pacman -Rcnss {' '.join(package_names)}")
+
+    
+
+# Update packages
+
+def update_packages():
+    
+    os.system("pacman -Syyu --noconfirm")
+    
+
+# list installed packages
+
+def list_installed_packages(output_file=None):
+
+    try:
+        
+        if output_file:
+
+            os.system(f"pacman -Q > {output_file}")
+
+        else:
+
+            os.system("pacman -Q")
+    
+    except Exception as e:
+
+        print(f"Failed to list the installed packages: {str(e)}")
+
+
+# Fix pacman keys (useful for old iso installations of if the system was not updated in long time)
+
+def fix_pacman_keys():
+    
+    keyring_folder = "/etc/pacman.d/gnupg/"
+
+    if os.path.exists(keyring_folder):
+        shutil.rmtree(keyring_folder)
+        print("Removed old keys")
+    else:
+        print("No old keys found")
+
+    print("Initializing pacman keyring")
+    os.system("pacman-key --init")
+
+    print("Populate Arch Linux Keys")
+    os.system("pacman-key --populate archlinux")
+
+    print("Updating Arch Linux Keys")
+    os.system("pacman -Sy archlinux-keyring --noconfirm")
+
+if __name__ == "__main__":
+
+    # Set the arguments for the wrapper
+
+    parser = argparse.ArgumentParser(description="Pacman wrapper (kinda) with AUR support.")
+    parser.add_argument("action", choices=["install", "add-aur-support", "remove", "uninstall", "update", "upgrade", "fix-keys", "search", "list-installed"], help="Action to perform")
+    parser.add_argument("packages", nargs="*", help="Package names to install or remove")
+    parser.add_argument("--aur", default=None,  help="use an AUR helper (Configurable on the config file) for package installation (only use for installation)")
+    parser.add_argument("--file", default=None, help="Export the list of installed packages to a file (Only use with the list-installed action)")
+    parser.epilog = "\nThis pacman wrapper has super cow powers."
+    args = parser.parse_args()
+
+    # Select the action to take based on the arguments user provided
+
+    if args.action == "install":
+        if getpass.getuser() == 'root':
+            install_packages(args.packages, args.aur)
+        else:
+            print('This action can only be performed as root')
+    elif args.action == "update" or args.action == "upgrade":
+        if getpass.getuser() == 'root':
+            update_packages()
+        else:
+            print('This action can only be performed as root')
+    elif args.action == "remove" or args.action == "uninstall":
+        if getpass.getuser() == 'root':
+            remove_packages(args.packages)
+        else:
+            print('This action can only be performed as root')
+    elif args.action == "fix-keys":
+        if getpass.getuser() == 'root':
+            fix_pacman_keys()
+        else:
+            print('This action can only be performed as root')
+    elif args.action == "search":
+        search_packages(args.package)
+    elif args.action == "list-installed":
+        list_installed_packages(args.file)
+    elif args.action == "add-aur-support":
+        
+        if getpass.getuser() == 'root':
+            print('You can\'t build AUR packages as root for security reasons, do it as a regular user')
+        else:
+            add_aur_support()
