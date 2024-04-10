@@ -232,13 +232,13 @@ def update_packages():
 
 # list installed packages
 
-def list_installed_packages(output_file=None):
+def list_installed_packages(file=None):
 
     try:
         
-        if output_file:
+        if file:
 
-            os.system(f"pacman -Q > {output_file}")
+            os.system(f"pacman -Q > {file}")
 
         else:
 
