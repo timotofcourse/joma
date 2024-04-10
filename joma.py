@@ -166,7 +166,7 @@ def search_packages(package_name):
 
 # Install Packages
 
-def install_packages(package_names, is_aur_helper_selected):
+def install_packages(package_names, aur=None):
     
     if not is_parallel_downloads_enabled():
 
@@ -178,7 +178,7 @@ def install_packages(package_names, is_aur_helper_selected):
         print("Usage: joma install <package1> <package2> ... --aur")
         sys.exit(1)
 
-    if is_aur_helper_selected:
+    if aur is not None:
             
         if getpass.getuser() == 'root':
                 
@@ -277,8 +277,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Pacman wrapper (kinda) with AUR support.")
     parser.add_argument("action", choices=["install", "add-aur-support", "remove", "uninstall", "update", "upgrade", "fix-keys", "search", "list-installed"], help="Action to perform")
     parser.add_argument("packages", nargs="*", help="Package names to install or remove")
-    parser.add_argument("--aur",  help="use an AUR helper (Configurable on the config file) for package installation (only use for installation)")
-    parser.add_argument("--file", help="Export the list of installed packages to a file (Only use with the list-installed action)")
+    parser.add_argument("--aur", default=None,  help="use an AUR helper (Configurable on the config file) for package installation (only use for installation)")
+    parser.add_argument("--file", default=None, help="Export the list of installed packages to a file (Only use with the list-installed action)")
     parser.epilog = "\nThis pacman wrapper has super cow powers."
     args = parser.parse_args()
 
