@@ -158,7 +158,7 @@ def add_aur_support():
 
             print("Invalid choice. Please enter 'yay' or 'paru'.")
 
-# Seach Packages
+# Search Packages
 
 def search_packages(package_name):
 
@@ -263,7 +263,7 @@ def list_installed_packages(output_file=None):
         print(f"Failed to list the installed packages: {str(e)}")
 
 
-# Fix pacman keys (usefull for old iso instalations of if the system was not updated in long time)
+# Fix pacman keys (useful for old iso installations of if the system was not updated in long time)
 
 def fix_pacman_keys():
     
@@ -291,7 +291,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Pacman wrapper with AUR support.")
     parser.add_argument("action", choices=["install", "add-aur-support", "remove", "uninstall", "update", "upgrade", "fix-keys", "search", "list-installed"], help="Action to perform")
     parser.add_argument("packages", nargs="*", help="Package names to install or remove")
-    parser.add_argument("--aur", choices=["yay", "paru"], help="AUR helper to use for package installation (only use for instalation)")
+    parser.add_argument("--aur", choices=["yay", "paru"], help="AUR helper to use for package installation (only use for installation)")
     parser.add_argument("--file", help="Export the list of installed packages to a file (Only use with the list-installed action)")
     parser.epilog = "\nThis pacman wrapper has super cow powers."
     args = parser.parse_args()
