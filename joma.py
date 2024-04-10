@@ -225,23 +225,10 @@ def remove_packages(package_names):
 
 # Update packages
 
-def update_packages(aur_helper):
+def update_packages():
     
     os.system("pacman -Syyu --noconfirm")
     
-    if aur_helper:
-
-        result = os.system(f"witch {aur_helper} > /dev/null 2>&1")
-
-        if result == 0:
-
-            print(f"Updating packages from AUR using {aur_helper}...")
-            os.system(f"{aur_helper} -Syyu --noconfirm")
-
-        else:
-            pass
-    else:
-        pass
 
 # list installed packages
 
