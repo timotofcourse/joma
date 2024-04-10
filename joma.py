@@ -170,7 +170,7 @@ def install_packages(package_names, is_aur_helper_selected):
     
     if not is_parallel_downloads_enabled():
 
-                enable_parallel_downloads()
+        enable_parallel_downloads()
 
     if is_aur_helper_selected:
 
