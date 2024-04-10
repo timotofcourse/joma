@@ -167,6 +167,10 @@ def search_packages(package_name):
 # Install Packages
 
 def install_packages(package_names, is_aur_helper_selected):
+    
+    if not is_parallel_downloads_enabled():
+
+                enable_parallel_downloads()
 
     if is_aur_helper_selected:
 
@@ -190,9 +194,6 @@ def install_packages(package_names, is_aur_helper_selected):
 
             print(f"Installing packages: {', '.join(package_names)} from official repositories...")
 
-            if not is_parallel_downloads_enabled():
-
-                enable_parallel_downloads()
 
             os.system(f"pacman -S {' '.join(package_names)}")
 
