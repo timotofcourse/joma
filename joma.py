@@ -9,7 +9,7 @@ from ruamel.yaml import YAML
 # Load config file
 
 home = os.path.expanduser('~')
-config_file = '/.config/joma-config.yaml'
+config_file = home + '/.config/joma-config.yaml'
 
 yaml = YAML(typ='safe')
 with open(config_file, 'r', encoding='utf-8') as yaml_file:
