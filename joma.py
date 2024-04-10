@@ -193,8 +193,6 @@ def install_packages(package_names, is_aur_helper_selected):
 
                 print(f"Installing packages: {', '.join(package_names)} from AUR using {aur_helper}...")
                 os.system(f"{aur_helper} -S --needed --noconfirm {' '.join(package_names)}")
-
-
     else:
 
         if getpass.getuser() == 'root':
@@ -212,15 +210,17 @@ def install_packages(package_names, is_aur_helper_selected):
 # Remove packages
 
 def remove_packages(package_names):
-
-    if package_names:
-
-        print(f"Removing {package_names} from the system")
-        os.system(f"pacman -Rcnss {' '.join(package_names)}")
-
-    else:
-        print("Usage: joma install <package1> <package2> ...")
+    
+    
+    if len(package_names) == 0:
+        print('No packages to remove This is how to use this action')
+        print("Usage: joma remove <package1> <package2> ...")
+        print("Usage: joma uninstall <package1> <package2> ...")
         sys.exit(1)
+
+    print(f"Removing {package_names} from the system")
+    os.system(f"pacman -Rcnss {' '.join(package_names)}")
+
     
 
 # Update packages
