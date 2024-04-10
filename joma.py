@@ -172,35 +172,42 @@ def install_packages(package_names, is_aur_helper_selected):
 
         enable_parallel_downloads()
 
+    if len(package_names) == 0:
+        print('No packages to install This is how to use this action')
+        print("Usage: joma install <package1> <package2> ...")
+        print("Usage: joma install <package1> <package2> ... --aur")
+        sys.exit(1)
+
     if is_aur_helper_selected:
-
-        if aur_helper:
             
-            if getpass.getuser() == 'root':
+        if getpass.getuser() == 'root':
                 
-                print('You can\'t build AUR packages as root for security reasons, do it as a regular user')
+            print('You can\'t build AUR packages as root for security reasons, do it as a regular user')
+            sys.exit(1)
                 
-            else:
-                
-                result = os.system(f"which {aur_helper} > /dev/null 2>&1")
-
-                if result == 0:
-
-                    print(f"Installing packages: {', '.join(package_names)} from AUR using {aur_helper}...")
-                    os.system(f"{aur_helper} -S --needed --noconfirm {' '.join(package_names)}")
-
-
         else:
+                
+            result = os.system(f"which {aur_helper} > /dev/null 2>&1")
 
+            if result == 0:
+
+                print(f"Installing packages: {', '.join(package_names)} from AUR using {aur_helper}...")
+                os.system(f"{aur_helper} -S --needed --noconfirm {' '.join(package_names)}")
+
+
+    else:
+
+        if getpass.getuser() == 'root':
+                
             print(f"Installing packages: {', '.join(package_names)} from official repositories...")
 
 
             os.system(f"pacman -S {' '.join(package_names)}")
+                
+        else:
+                
+            print('This action can only be performed as root (Except when using the --aur argument)')
 
-    else:
-
-        print("Usage: joma install <package1> <package2> ...")
-        sys.exit(1)
 
 # Remove packages
 
