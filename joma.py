@@ -297,12 +297,12 @@ if __name__ == "__main__":
             install_packages(args.packages, args.aur)
         else:
             print('This action can only be performed as root')
-    elif args.action == "update" or "upgrade":
+    elif args.action == "update" or args.action == "upgrade":
         if getpass.getuser() == 'root':
             update_packages()
         else:
             print('This action can only be performed as root')
-    elif args.action == "remove" or "uninstall":
+    elif args.action == "remove" or args.action == "uninstall":
         if getpass.getuser() == 'root':
             remove_packages(args.packages)
         else:
