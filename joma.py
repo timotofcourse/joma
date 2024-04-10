@@ -5,6 +5,7 @@ import os
 import sys
 import shutil
 from ruamel.yaml import YAML
+import getpass
 
 # Load config file
 
@@ -292,16 +293,32 @@ if __name__ == "__main__":
     # Select the action to take based on the arguments user provided
 
     if args.action == "install":
-        install_packages(args.packages, args.aur)
+        if getpass.getuser() == 'root':
+            install_packages(args.packages, args.aur)
+        else:
+            print('This action can only be performed as root')
     elif args.action == "update" or "upgrade":
-        update_packages()
+        if getpass.getuser() == 'root':
+            update_packages()
+        else:
+            print('This action can only be performed as root')
     elif args.action == "remove" or "uninstall":
-        remove_packages(args.packages)
+        if getpass.getuser() == 'root':
+            remove_packages(args.packages)
+        else:
+            print('This action can only be performed as root')
     elif args.action == "fix-keys":
-        fix_pacman_keys()
+        if getpass.getuser() == 'root':
+            fix_pacman_keys()
+        else:
+            print('This action can only be performed as root')
     elif args.action == "search":
         search_packages(args.package)
     elif args.action == "list-installed":
         list_installed_packages(args.file)
     elif args.action == "add-aur-support":
-        add_aur_support()
+        
+        if getpass.getuser() == 'root':
+            print('You can\'t build AUR packages as root for security reasons, do it as a regular user')
+        else:
+            add_aur_support()
