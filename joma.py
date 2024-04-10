@@ -274,10 +274,10 @@ if __name__ == "__main__":
 
     # Set the arguments for the wrapper
 
-    parser = argparse.ArgumentParser(description="Pacman wrapper with AUR support.")
+    parser = argparse.ArgumentParser(description="Pacman wrapper (kinda) with AUR support.")
     parser.add_argument("action", choices=["install", "add-aur-support", "remove", "uninstall", "update", "upgrade", "fix-keys", "search", "list-installed"], help="Action to perform")
     parser.add_argument("packages", nargs="*", help="Package names to install or remove")
-    parser.add_argument("--aur", choices=["yay", "paru"], help="AUR helper to use for package installation (only use for installation)")
+    parser.add_argument("--aur",  help="use an AUR helper (Configurable on the config file) for package installation (only use for installation)")
     parser.add_argument("--file", help="Export the list of installed packages to a file (Only use with the list-installed action)")
     parser.epilog = "\nThis pacman wrapper has super cow powers."
     args = parser.parse_args()
