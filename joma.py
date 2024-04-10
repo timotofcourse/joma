@@ -118,45 +118,38 @@ def add_aur_support():
 
     check_and_install_git()
     
-    # Check if yay and/or paru are installed
+    # Check if the selected AUR helper is installed
 
     result = os.system(f"which {aur_helper} > /dev/null 2>&1")
 
     if result == 0:
 
-        print("Yay is installed.")
+        print(f"{aur_helper} is installed.")
 
         return
 
-    result = os.system("which paru > /dev/null 2>&1")
-
-    if result == 0:
-
-        print("Paru is installed.")
-
-        return
-
-    # If neither Yay nor Paru is installed, prompt the user to choose one
+    # If the selected AUR helper is installed, prompt the user to choose one
 
     while True:
 
-        choice = input("Neither Yay nor Paru is installed. Do you want to install Yay or Paru? (yay/paru): ").strip().lower()
+        choice = input(f"The {aur_helper} isn't installed. Do you want to install {aur_helper}? (Y/n): ").strip().lower()
 
-        if choice == "yay":
+        if choice == "y":
 
-            install_aur_helper("yay")
-
-            return
-        
-        elif choice == "paru":
-
-            install_aur_helper("paru")
+            install_aur_helper(aur_helper)
 
             return
         
-        else:
+        elif choice == "":
 
-            print("Invalid choice. Please enter 'yay' or 'paru'.")
+            install_aur_helper(aur_helper)
+
+            return
+        
+        elif choice == 'n':
+            
+            return Exception
+        
 
 # Search Packages
 
@@ -172,9 +165,9 @@ def search_packages(package_name):
 
 # Install Packages
 
-def install_packages(package_names, aur_helper):
+def install_packages(package_names, is_aur_helper_selected):
 
-    if package_names:
+    if is_aur_helper_selected:
 
         if aur_helper:
             
